@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+form {
+  display: grid;
+  gap: 0.5rem;
+  background: linear-gradient(to top left, var(--btntext), var(--bkg));
+  border: 4px solid var(--btn);
+  border-radius: 0.5rem;
+  text-align: center;
+  /* padding: clamp(1rem, 10vw, 2rem); */
+  /* margin: clamp(1rem, 10vw, 2rem); */
+  box-shadow: 6px 10px 40px 2px var(--btntext);
+}
+
+input {
+  padding: 0.7rem 1rem !important;
+  /* height: 1.5em !important; */
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 1px solid black;
+  background: white;
+  background-image: none;
+  border-radius: 2px;
+  /* flex: 1; */
+  padding: 0.7rem 1rem !important;
+
+  /* height: 2.6em !important; */
+
+  /* padding: 0 2px; */
+  color: black;
+  cursor: pointer;
+  /* font-size: 1em; */
+  /* font-family: "Open Sans", sans-serif; */
+}
+select::-ms-expand {
+  display: none;
+}
+
+.css-xuwa1m-control {
+  height: 1.5em !important;
+  min-height: 50px !important;
+}
+
+.css-xuwa1m-control:focus {
+  height: 1.5em !important;
+  min-height: 50px !important;
+}
+
+input .MuiSelect-nativeInput {
+  height: 1.5em !important;
+  min-height: 50px !important;
+}
+
+.MuiSelect-select {
+  /* height: 1.5em !important; */
+  padding: 0.7rem 1rem !important;
+
+  /* min-height: 40px !important; */
+}
+
+.css-1o0dma5-control {
+  padding: 3px 0px !important;
+  outline: none !important;
+  /* min-height: 10px !important; */
+  /* position: fixed !important; */
+}
+
+.css-1o0dma5-control:hover {
+  border-color: aqua !important;
+  display: flex !important;
+  /* min-height: 10px !important; */
+  /* position: fixed !important; */
+}
+.css-1sar8y0-MuiFormControl-root-MuiTextField-root {
+  margin: 0 !important;
+}
+
+.floating-group {
+  position: relative;
+}
+
+input:not(:focus):valid ~ .file-label {
+  background-color: black !important;
+}
+
+.file-label {
+  left: 1rem;
+  position: absolute;
+  color: white;
+  margin-top: -10px;
+  /* margin-right: 1rem; */
+  border-radius: 2px;
+  padding: 0 2px;
+  text-transform: capitalize;
+  font-size: 0.8rem;
+  transition: color 250ms ease-in-out, top 250ms ease-in-out;
+}
+
+input:focus ~ .file-label {
+  color: white;
+  /* transform: translateY(-50%); */
+
+  font-weight: 600;
+  background-color: dodgerblue !important;
+  border-radius: 2px;
+}
+
+input:not(:focus):valid ~ .file-label {
+  background-color: black !important;
+  /* transform: translateY(-50%); */
+  color: white;
+}
+
+input[type="file"] {
+  /* margin-left: 10px; */
+  /* border: 1px solid #b5bcc7; */
+  padding: 0 !important;
+  height: 43px;
+
+  /* width: 360px; */
+  vertical-align: middle;
+  /* margin-bottom: 10px; */
+  direction: rtl;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background: #485dc5;
+  color: #ffffff;
+  line-height: 38px;
+  /* padding: 0px 20px; */
+  border: none;
+  float: right;
+}
+.input-file-tailwind {
+  @apply file:ml-4  file:h-full
+      file:border-0 file:bg-gray-100
+      file:py-2 file:px-4
+      file:text-sm file:font-semibold
+      file:text-indigo-900
+      hover:file:bg-violet-100;
+}
+
+.css-1s2u09g-control {
+  min-height: 38px !important;
+}
+
+.css-1pahdxg-control {
+  min-height: 38px !important;
+  box-shadow: #1976d2 !important;
+}
+
+.css-6j8wv5-Input {
+  min-height: 38px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.css-1okebmr-indicatorSeparator {
+  margin-top: 0 !important;
+}
+
+.css-tlfecz-indicatorContainer {
+  margin-top: 0 !important;
+}
+
+.css-g1d714-ValueContainer {
+  min-height: 38px !important;
+  padding: 0 8px !important;
+}
+
+.css-1lof2qr-MuiFormControl-root {
+  margin-bottom: 0 !important;
+}

@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body{
+        @apply text-[#22343D] box-border
+
+    }
+}
+
+@layer components{
+    .primary-button{
+        @apply md:px-8 px-2 md:py-2 py-1 whitespace-nowrap font-semibold text-lg bg-[#00CEEB] text-white rounded-md cursor-pointer border-[#00CEEB] hover:bg-white border-2 hover:text-[#00CEEB] transition-all duration-200 active:scale-90
+    }
+    .secondary-button{
+        @apply md:px-8 px-2 md:py-2 py-1 whitespace-nowrap font-semibold text-lg border-2 border-[#BCD0E5] rounded-md cursor-pointer hover:border-[#00CEEB] hover:text-[#00CEEB] duration-200 active:scale-90 text-white
+    }
+    .primary-button-white{
+        @apply primary-button bg-white text-primary hover:bg-primary hover:text-white hover:border-white
+    }
+    .nav-item{
+        @apply cursor-pointer px-4 hover:font-semibold hover:scale-105 transition transform active:scale-90 text-white hover:text-primary
+    }
+    /* .container{
+        @apply m-auto px-8 sm:px-12
+    } */
+    .icon-button{
+        @apply hover:scale-125 active:scale-95 cursor-pointer duration-200
+    }
+
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+.bg-clip {
+  clip-path: ellipse(66% 100% at 50.16% 0%);
+  background-color: aqua;
+  position: absolute !important;
+  width: 100vw;
+  left: 0;
+  height: 60% !important;
+  top: 0;
+  z-index: -10;
+}
+

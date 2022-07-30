@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.floating-group {
+  position: relative;
+}
+
+input:not(:focus):valid ~ .floating-label {
+  background-color: black !important;
+  /* transform: translateY(-50%) !important; */
+  /* top: 50%; */
+
+
+}
+
+.floating-label {
+  position: absolute;
+  color: white;
+  /* top: 50%; */
+  left: 1rem;
+  padding: 0px 2px 0px 2px;
+  color: white;
+  font-weight: 600;
+  background-color: black !important;
+  border-radius: 2px;
+
+  transform: translateY(-50%);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: color 250ms ease-in-out, top 250ms ease-in-out;
+}
+
+.floating-group input {
+  /* background-color: var(--text); */
+  border: 1px solid rgb(167, 166, 166) !important;
+  font: inherit;
+  color: var(--btntext);
+  width: 100%;
+
+  /* border-radius: 3rem; */
+  padding: .7rem 1rem !important;
+
+  height: 50px !important;
+  border-radius: 2px;
+}
+
+.floating-group input:focus {
+  outline: none;
+  /* border: 1px solid dodgerblue; */
+  box-shadow: 0px 0px 0px 2px var(--bkg), 0px 0px 0px 5px var(--btn);
+}
+
