@@ -1,8 +1,8 @@
-import React from 'react';
 import { Controller } from 'react-hook-form';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import FormHelperText from '@mui/material/FormHelperText';
+import React from 'react';
 
 function CheckBoxContainer({ name, control, label, errors, defaultValue }) {
   return (

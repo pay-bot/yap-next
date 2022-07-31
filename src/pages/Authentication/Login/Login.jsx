@@ -12,7 +12,7 @@ function Login() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const { login, googleSingIn } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const styles = useStyles();
 
   const {

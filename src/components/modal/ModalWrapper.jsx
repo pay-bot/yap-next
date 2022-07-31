@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogActions,  DialogTitle, DialogContent, Typography, Button } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 // import CloseIcon from '@material-ui/icons/Close';
 // import Controls from './controls/Controls';
@@ -19,7 +20,12 @@ export default function ModalWrapper({ isOpen, header, children, maxWidth, isHea
     }
   }, [onClose]);
 
-  
+  const CustomDialog = styled(Dialog)(({ theme }) => ({
+    top: 10,
+    bottom: 'auto',
+    // overflow: 'auto',
+    // maxHeight: '95vh',
+  }));
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {

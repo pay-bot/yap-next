@@ -14,7 +14,7 @@ import ContentWrapper from "../../../components/layout/ContentWrapper";
 import BannerForm from "../../../components/form/banner/BannerForm";
 
 export default function CreateBanner() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const createBanners = (data) => {

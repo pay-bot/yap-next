@@ -1,31 +1,39 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Pagination, Typography } from '@mui/material';
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Pagination,
+  Typography,
+} from "@mui/material";
 
 // import { ActionCell } from "../../../../components/table/photo/category/ActionCell";
 // import { CountCell } from "../../../../components/table/photo/category/CountCell";
 // import { ImageCell } from "../../../../components/table/photo/category/ImageCell";
-import { useDispatch } from 'react-redux';
-import { useQuery } from 'react-query';
+import { useDispatch } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 
-import TitlePage from '../../../../components/TitlePage';
-import Add from '../../../../components/button/Add';
-import SectionWrapper from '../../../../components/layout/SectionWrapper';
+import TitlePage from "../../../../components/TitlePage";
+import Add from "../../../../components/button/Add";
+import SectionWrapper from "../../../../components/layout/SectionWrapper";
 
-import ContentHeading from '../../../../components/layout/ContentHeading';
+import ContentHeading from "../../../../components/layout/ContentHeading";
 
-import AddCategoryResourceModal from '../../../../components/modal/AddCategoryResourceModal';
-import { openModal } from '../../../../features/modal/modalSlice';
+import AddCategoryResourceModal from "../../../../components/modal/AddCategoryResourceModal";
+import { openModal } from "../../../../features/modal/modalSlice";
 // import ReactTable from '../../../../components/react-table/ReactTable';
 // import { usePhotosData } from '../../../../hooks/usePhotosData';
-import { fetchPhotos } from '../../../../hooks/usePhotosData';
-import usePagination from '../../../../helper/Pagination';
-import ActionCell from '../../../../components/table/resource/photo/ActionCell';
-import { shortText } from '../../../../helper/StringHelper';
+import { fetchPhotos } from "../../../../hooks/usePhotosData";
+import usePagination from "../../../../helper/Pagination";
+import ActionCell from "../../../../components/table/resource/photo/ActionCell";
+import { shortText } from "../../../../helper/StringHelper";
 
 export default function Photo() {
   const [photoData, setPhotoData] = useState([]);
-  useQuery(['photos'], fetchPhotos, {
+  useQuery(["photos"], fetchPhotos, {
     onSuccess: (e) => {
       setPhotoData(e?.data?.data);
     },
@@ -50,7 +58,14 @@ export default function Photo() {
   return (
     <SectionWrapper>
       <ContentHeading>
-        <Add onClick={() => dispatch(openModal({ componentName: 'AddResourceCategory', id: null }))} title="Create Category" />
+        <Add
+          onClick={() =>
+            dispatch(
+              openModal({ componentName: "AddResourceCategory", id: null })
+            )
+          }
+          title="Create Category"
+        />
         <AddCategoryResourceModal />
       </ContentHeading>
       <div className="mt-6 grid grid-cols-5 gap-3 ">
@@ -66,7 +81,12 @@ export default function Photo() {
                 <ActionCell value={pho.id} data={_DATA?.currentData()} />
               </CardActions>
               <CardActionArea>
-                <CardMedia component="img" className="h-[180px] object-cover w-full" image={pho.url} alt="Image" />
+                <CardMedia
+                  component="img"
+                  className="h-[180px] object-cover w-full"
+                  image={pho.url}
+                  alt="Image"
+                />
                 <CardContent>
                   <Typography variant="body2" color="text.secondary">
                     {/* {assetsData?.description || 'Description'} */}
@@ -77,7 +97,15 @@ export default function Photo() {
           </div>
         ))}
       </div>
-      <Pagination count={count} size="large" page={page} variant="outlined" shape="rounded" onChange={handleChange} />
+      <Pagination
+        count={count}
+        size="large"
+        page={page}
+        variant="outlined"
+        shape="rounded"
+        onChange={handleChange}
+      />
     </SectionWrapper>
   );
 }
+

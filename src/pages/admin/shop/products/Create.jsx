@@ -14,7 +14,7 @@ import request from "../../../../utils/axios-utils";
 import ProductForm from "../../../../components/form/shop/ProductForm";
 
 export default function CreateProduct() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 

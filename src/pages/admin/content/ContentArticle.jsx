@@ -42,7 +42,7 @@ export default function ContentArticle({ collectionData }) {
   const data = useMemo(() => collectionData, [collectionData]);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <SectionWrapper>
       <ContentHeading>

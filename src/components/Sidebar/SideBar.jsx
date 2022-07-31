@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+
 
 import { useSelector } from 'react-redux';
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -7,11 +7,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import _ from 'lodash';
 import SidebarMenu from './SidebarMenu';
 import { useNavigationsData } from '../../hooks/useNavigationsData';
+import Link from 'next/link';
 
 function SideBar({ offLayout }) {
   const { isSuccess, data: navs } = useNavigationsData();
 
-  // console.log('navs', navs?.data);
+  console.log('navs', navs?.data);
   const sidebar = useSelector((state) => state.sidebar.isOpen);
 
   const showAnimation = {
@@ -39,16 +40,16 @@ function SideBar({ offLayout }) {
   const sortedSidenav = isSuccess ? _.sortBy(sideNav, 'list_order') : [];
 
   return (
-    <div className={` ${offLayout ? 'hidden' : 'main-container  '}`}>
+    <div className="main-container">
       <motion.div
         animate={{
-          width: sidebar ? '260px' : '64px',
+          width: sidebar ? "260px" : "64px",
 
-          transition: {
-            duration: 0.5,
-            type: 'spring',
-            damping: 10,
-          },
+          // transition: {
+          //   duration: 0.5,
+          //   type: "spring",
+          //   damping: 10,
+          // },
         }}
         className="sidebar fixed pb-10"
       >
@@ -57,17 +58,29 @@ function SideBar({ offLayout }) {
             <div className="search_icon" />
             <AnimatePresence>
               {sidebar && (
-                <Link to="/">
-                  <div className="">
-                    <img src="/yaplogofullwhite.svg" alt="" className="w-full px-6 py-6 " />
-                  </div>
+                <Link href="/">
+                  <a>
+                    <div className="">
+                      <img
+                        src="/yaplogofullwhite.svg"
+                        alt=""
+                        className="w-full px-6 py-6 "
+                      />
+                    </div>
+                  </a>
                 </Link>
               )}
             </AnimatePresence>
           </div>
           <section className="routes">
             {sortedSidenav?.map((route) => (
-              <SidebarMenu key={route.name} setIsOpen={sidebar} route={route} showAnimation={showAnimation} isOpen={sidebar} />
+              <SidebarMenu
+                key={route.name}
+                setIsOpen={sidebar}
+                route={route}
+                // showAnimation={showAnimation}
+                isOpen={sidebar}
+              />
             ))}
           </section>
         </PerfectScrollbar>
@@ -77,3 +90,4 @@ function SideBar({ offLayout }) {
 }
 
 export default SideBar;
+

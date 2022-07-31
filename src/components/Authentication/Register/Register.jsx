@@ -12,7 +12,7 @@ function Register() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const { singUp } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
   const {
     handleSubmit,
     control,

@@ -1,6 +1,5 @@
-import { Tooltip, Button } from "@mantine/core";
+import Tooltip from '@mui/material/Tooltip';
 
 export default function TooltipWrapper({ children, tooltip }) {
-  return <Tooltip label={tooltip}>{children}</Tooltip>;
+  return <Tooltip title={tooltip}>{children}</Tooltip>;
 }
-

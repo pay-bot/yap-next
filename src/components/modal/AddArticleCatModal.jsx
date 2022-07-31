@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-import { closeModal } from '../../features/modal/modalSlice';
-import request from '../../utils/axios-utils';
-import ModalWrapper from './ModalWrapper';
-import { closeLoading, isReactLoading } from '../../features/reactLoadingSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { closeModal } from "../../features/modal/modalSlice";
+import request from "../../utils/axios-utils";
+import ModalWrapper from "./ModalWrapper";
+import { closeLoading, isReactLoading } from "../../features/reactLoadingSlice";
 
-import CategoryForm from '../form/category/CategoryForm';
+import CategoryForm from "../form/category/CategoryForm";
 
 export default function AddArticleCatModal() {
   const dispatch = useDispatch();
@@ -15,19 +15,23 @@ export default function AddArticleCatModal() {
   const createCategory = (data) => {
     return request({
       url: `/news/categories`,
-      method: 'post',
+      method: "post",
       data,
     });
   };
 
   const { mutateAsync } = useMutation(createCategory, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('articleCategories');
-      console.log('d', e);
+      queryClient.invalidateQueries("articleCategories");
+      console.log("d", e);
       if (e.request.status === 200) {
-        toast.success('Article category has been created', { position: 'top-right' });
+        toast.success("Article category has been created", {
+          position: "top-right",
+        });
       } else {
-        toast.error('Article category failed to create  ', { position: 'top-right' });
+        toast.error("Article category failed to create  ", {
+          position: "top-right",
+        });
       }
     },
   });
@@ -42,8 +46,9 @@ export default function AddArticleCatModal() {
   const dataModal = useSelector((state) => state.modal);
 
   return (
-    <ModalWrapper componentName="AddArticleCatModal" modalId={dataModal?.id}>
+    <ModalWrapper componentName="AddArticleCatModal" modalid={dataModal.id}>
       <CategoryForm onFormSubmit={onSubmitArticleCat} isLoading="" />
     </ModalWrapper>
   );
 }
+

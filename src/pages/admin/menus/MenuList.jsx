@@ -1,19 +1,22 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import SortableTree from '@nosferatu500/react-sortable-tree';
-import { useAddMenuData, useMenuData } from '../../../hooks/useMenusData';
-import TitlePage from '../../../components/TitlePage';
-import SectionWrapper from '../../../components/layout/SectionWrapper';
-import ContentHeading from '../../../components/layout/ContentHeading';
-import Add from '../../../components/button/Add';
-import AddMenuModal from '../../../components/modal/AddMenuModal';
-import { closeModal, openModal } from '../../../features/modal/modalSlice';
-import MenuForm from '../../../components/form/menu/Form';
-import request from '../../../utils/axios-utils';
-import ModalWrapper from '../../../components/modal/ModalWrapper';
-import { closeLoading, isReactLoading } from '../../../features/reactLoadingSlice';
-import '@nosferatu500/react-sortable-tree/style.css';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import SortableTree from "@nosferatu500/react-sortable-tree";
+import { useAddMenuData, useMenuData } from "../../../hooks/useMenusData";
+import TitlePage from "../../../components/TitlePage";
+import SectionWrapper from "../../../components/layout/SectionWrapper";
+import ContentHeading from "../../../components/layout/ContentHeading";
+import Add from "../../../components/button/Add";
+import AddMenuModal from "../../../components/modal/AddMenuModal";
+import { closeModal, openModal } from "../../../features/modal/modalSlice";
+import MenuForm from "../../../components/form/menu/Form";
+import request from "../../../utils/axios-utils";
+import ModalWrapper from "../../../components/modal/ModalWrapper";
+import {
+  closeLoading,
+  isReactLoading,
+} from "../../../features/reactLoadingSlice";
+import "@nosferatu500/react-sortable-tree/style.css";
 
 function MenuCollection() {
   const dispatch = useDispatch();
@@ -30,7 +33,7 @@ function MenuCollection() {
   const createMenu = (data) => {
     return request({
       url: `/menus`,
-      method: 'post',
+      method: "post",
       data,
     });
   };
@@ -39,12 +42,12 @@ function MenuCollection() {
 
   const { mutateAsync } = useMutation(createMenu, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('menus');
+      queryClient.invalidateQueries("menus");
       if (e.request.status === 200) {
-        toast.success('Menu Child has been created', { position: 'top-right' });
+        toast.success("Menu Child has been created", { position: "top-right" });
         // dispatch(closeModal())
       } else {
-        toast.error('Menu Child failed to create  ', { position: 'top-right' });
+        toast.error("Menu Child failed to create  ", { position: "top-right" });
         // dispatch(closeModal())
       }
     },
@@ -60,20 +63,20 @@ function MenuCollection() {
   const updateMenu = (data) => {
     return request({
       url: `/menus/${id}`,
-      method: 'post',
+      method: "post",
       data,
     });
   };
 
   const { mutateAsync: mutateUpdate } = useMutation(updateMenu, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('menus');
+      queryClient.invalidateQueries("menus");
 
       if (e.request.status === 200) {
-        toast.success('Menu has been updated', { position: 'top-right' });
+        toast.success("Menu has been updated", { position: "top-right" });
         // dispatch(closeModal());
       } else {
-        toast.error('Menu failed to update  ', { position: 'top-right' });
+        toast.error("Menu failed to update  ", { position: "top-right" });
         // dispatch(closeModal());
       }
     },
@@ -86,8 +89,8 @@ function MenuCollection() {
     dispatch(closeModal());
   };
   const treeData = [
-    { title: 'Chicken', children: [{ title: 'Egg' }] },
-    { title: 'Fish', children: [{ title: 'fingerline' }] },
+    { title: "Chicken", children: [{ title: "Egg" }] },
+    { title: "Fish", children: [{ title: "fingerline" }] },
   ];
 
   function generateNprops(node) {
@@ -102,7 +105,12 @@ function MenuCollection() {
   return (
     <SectionWrapper>
       <ContentHeading>
-        <Add onClick={() => dispatch(openModal({ componentName: 'AddMenu', id: null }))} title="Create Menu" />
+        <Add
+          onClick={() =>
+            dispatch(openModal({ componentName: "AddMenu", id: null }))
+          }
+          title="Create Menu"
+        />
       </ContentHeading>
       <AddMenuModal />
       <ModalWrapper componentName="AddChildMenu" modalid={dataModal.id}>
@@ -117,8 +125,14 @@ function MenuCollection() {
       <ModalWrapper componentName="EditMenu" modalid={dataModal.id}>
         {menus?.data?.map((data) => {
           if (data.id === dataModal.id) {
-            console.log('men', data);
-            return <MenuForm defaultValues={data} key={data.id} onFormSubmit={onUpdateMenus} />;
+            console.log("men", data);
+            return (
+              <MenuForm
+                defaultValues={data}
+                key={data.id}
+                onFormSubmit={onUpdateMenus}
+              />
+            );
           }
           return null;
         })}
@@ -144,3 +158,4 @@ function MenuCollection() {
 }
 
 export default MenuCollection;
+

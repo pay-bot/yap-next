@@ -1,9 +1,9 @@
-import { useQuery } from 'react-query';
-import { fetchSections } from '../../../hooks/useSectionsData';
+import { useQuery } from "@tanstack/react-query";
+import { fetchSections } from "../../../hooks/useSectionsData";
 
 function FooterWeb() {
   const pageId = 1;
-  const { data: section } = useQuery(['sections', { pageId }], fetchSections);
+  const { data: section } = useQuery(["sections", { pageId }], fetchSections);
   // const navItems = [];
 
   const dataApi = section?.data?.model;
@@ -64,9 +64,12 @@ function FooterWeb() {
         </div>
       </div>
 
-      <p className="text-center mt-12">Made With Love By Product All Right Reserved</p>
+      <p className="text-center mt-12">
+        Made With Love By Product All Right Reserved
+      </p>
     </div>
   );
 }
 
 export default FooterWeb;
+

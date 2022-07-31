@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import { ReactSortable } from 'react-sortablejs';
-import { deleteMedias, useMediasData } from '../../../hooks/useMediaData';
-import SectionWrapper from '../../../components/layout/SectionWrapper';
-import CardImage from './CardImage';
-import SnackBarWrapper from '../../../components/materialUI/SnackBarWrapper';
-import request from '../../../utils/axios-utils';
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { ReactSortable } from "react-sortablejs";
+import { deleteMedias, useMediasData } from "../../../hooks/useMediaData";
+import SectionWrapper from "../../../components/layout/SectionWrapper";
+import CardImage from "./CardImage";
+import SnackBarWrapper from "../../../components/materialUI/SnackBarWrapper";
+import request from "../../../utils/axios-utils";
 
 // import './Dropzone.css';
 
@@ -31,7 +31,7 @@ function AddMedia() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [validFiles, setValidFiles] = useState([]);
   const [unsupportedFiles, setUnsupportedFiles] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -46,7 +46,14 @@ function AddMedia() {
   }, [selectedFiles]);
 
   const validateFile = (file) => {
-    const validTypes = ['image/jpeg', 'image/svg+xml', 'image/jpg', 'image/png', 'image/gif', 'image/x-icon'];
+    const validTypes = [
+      "image/jpeg",
+      "image/svg+xml",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/x-icon",
+    ];
     if (validTypes.indexOf(file.type) === -1) {
       return false;
     }
@@ -61,7 +68,7 @@ function AddMedia() {
       } else {
         files[i].invalid = true;
         setSelectedFiles((prevArray) => [...prevArray, files[i]]);
-        setErrorMessage('File type not permitted');
+        setErrorMessage("File type not permitted");
         setUnsupportedFiles((prevArray) => [...prevArray, files[i]]);
       }
     }
@@ -104,16 +111,19 @@ function AddMedia() {
 
   const fileSize = (size) => {
     if (size === 0) {
-      return '0 Bytes';
+      return "0 Bytes";
     }
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
     const i = Math.floor(Math.log(size) / Math.log(k));
     return `${parseFloat((size / k ** i).toFixed(2))} ${sizes[i]}`;
   };
 
   const fileType = (fileName) => {
-    return fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length) || fileName;
+    return (
+      fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length) ||
+      fileName
+    );
   };
 
   const removeFile = (name) => {
@@ -132,7 +142,7 @@ function AddMedia() {
 
   const openImageModal = (file) => {
     const reader = new FileReader();
-    modalRef.current.style.display = 'block';
+    modalRef.current.style.display = "block";
     reader.readAsDataURL(file);
     reader.onload = function (e) {
       modalImageRef.current.style.backgroundImage = `url(${e.target.result})`;
@@ -140,50 +150,58 @@ function AddMedia() {
   };
 
   const closeModal = () => {
-    modalRef.current.style.display = 'none';
-    modalImageRef.current.style.backgroundImage = 'none';
+    modalRef.current.style.display = "none";
+    modalImageRef.current.style.backgroundImage = "none";
   };
 
   const { contentId } = useParams();
   const queryClient = useQueryClient();
   const closeUploadModal = () => {
-    uploadModalRef.current.style.display = 'none';
+    uploadModalRef.current.style.display = "none";
   };
 
   const uploadFiles = async () => {
-    uploadModalRef.current.style.display = 'block';
-    uploadRef.current.innerHTML = 'File(s) Uploading...';
+    uploadModalRef.current.style.display = "block";
+    uploadRef.current.innerHTML = "File(s) Uploading...";
     for (let i = 0; i < validFiles.length; i++) {
       const formData = new FormData();
-      formData.append('file', validFiles[i]);
+      formData.append("file", validFiles[i]);
       // formData.append("key", "");
-      formData.append('photoable_id', contentId);
-      formData.append('photoable_type_name', 'Content');
-      formData.append('photoable_type', `App\\Models\\Content`);
+      formData.append("photoable_id", contentId);
+      formData.append("photoable_type_name", "Content");
+      formData.append("photoable_type", `App\\Models\\Content`);
 
       axios
-        .post(`${process.env.REACT_APP_API_URL}/resources/photos/upload`, formData, {
-          onUploadProgress: (progressEvent) => {
-            const uploadPercentage = Math.floor((progressEvent.loaded / progressEvent.total) * 100);
-            progressRef.current.innerHTML = `${uploadPercentage}%`;
-            progressRef.current.style.width = `${uploadPercentage}%`;
+        .post(
+          `${process.env.REACT_APP_API_URL}/resources/photos/upload`,
+          formData,
+          {
+            onUploadProgress: (progressEvent) => {
+              const uploadPercentage = Math.floor(
+                (progressEvent.loaded / progressEvent.total) * 100
+              );
+              progressRef.current.innerHTML = `${uploadPercentage}%`;
+              progressRef.current.style.width = `${uploadPercentage}%`;
 
-            if (uploadPercentage === 100) {
-              queryClient.invalidateQueries('medias');
-              toast.success('Media has been uploaded', { position: 'top-right' });
-              validFiles.length = 0;
-              setValidFiles([...validFiles]);
-              setSelectedFiles([...validFiles]);
-              setUnsupportedFiles([...validFiles]);
-              closeUploadModal();
-            }
-          },
-        })
+              if (uploadPercentage === 100) {
+                queryClient.invalidateQueries("medias");
+                toast.success("Media has been uploaded", {
+                  position: "top-right",
+                });
+                validFiles.length = 0;
+                setValidFiles([...validFiles]);
+                setSelectedFiles([...validFiles]);
+                setUnsupportedFiles([...validFiles]);
+                closeUploadModal();
+              }
+            },
+          }
+        )
         .catch(() => {
           uploadRef.current.innerHTML = `<span className="error">Error Uploading File(s)</span>`;
-          progressRef.current.style.backgroundColor = 'red';
+          progressRef.current.style.backgroundColor = "red";
           closeUploadModal();
-          toast.error('Media fail to upload', { position: 'top-right' });
+          toast.error("Media fail to upload", { position: "top-right" });
         });
     }
   };
@@ -194,7 +212,7 @@ function AddMedia() {
 
   const { mutateAsync } = useMutation(deleteMedias, {
     onSuccess: () => {
-      queryClient.invalidateQueries('medias');
+      queryClient.invalidateQueries("medias");
     },
   });
 
@@ -208,14 +226,17 @@ function AddMedia() {
   const cardImageData = [];
 
   media?.data?.data?.map((data) => {
-    if ((data.photoable_id == contentId) & (data.photoable_type === 'App\\Models\\Content')) {
+    if (
+      (data.photoable_id == contentId) &
+      (data.photoable_type === "App\\Models\\Content")
+    ) {
       cardImageData.push(data);
     }
   });
 
   // console.log('card', cardImageData)
 
-  const sortedCard = isSuccess ? _.sortBy(cardImageData, 'list_order') : [];
+  const sortedCard = isSuccess ? _.sortBy(cardImageData, "list_order") : [];
 
   const [sorCard, setSorCard] = useState([]);
 
@@ -230,20 +251,20 @@ function AddMedia() {
   const orderMedia = (data) => {
     return request({
       url: `/resources/photos/order`,
-      method: 'post',
+      method: "post",
       data,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" },
     });
   };
 
   const { mutateAsync: saveSortSection } = useMutation(orderMedia, {
     onSuccess: (e) => {
-      console.log('d', e);
+      console.log("d", e);
       if (e.request.status === 200) {
-        toast.success('Content has been sorted', { position: 'top-right' });
+        toast.success("Content has been sorted", { position: "top-right" });
         // dispatch(closeLoading());
       } else {
-        toast.error('Content failed to sorted', { position: 'top-right' });
+        toast.error("Content failed to sorted", { position: "top-right" });
         // dispatch(closeLoading());
       }
     },
@@ -251,7 +272,7 @@ function AddMedia() {
 
   async function saveBoard() {
     const formData = new FormData();
-    formData.append('list', JSON.stringify(dndCard));
+    formData.append("list", JSON.stringify(dndCard));
     await saveSortSection(formData);
     handleMoveEnd();
   }
@@ -264,33 +285,78 @@ function AddMedia() {
             Upload Files
           </button>
         ) : (
-          ''
+          ""
         )}
-        {unsupportedFiles.length ? <p>Please remove all unsupported files.</p> : ''}
-        <div className="drop-container" onDragOver={dragOver} onDragEnter={dragEnter} onDragLeave={dragLeave} onDrop={fileDrop} onClick={fileInputClicked}>
+        {unsupportedFiles.length ? (
+          <p>Please remove all unsupported files.</p>
+        ) : (
+          ""
+        )}
+        <div
+          className="drop-container"
+          onDragOver={dragOver}
+          onDragEnter={dragEnter}
+          onDragLeave={dragLeave}
+          onDrop={fileDrop}
+          onClick={fileInputClicked}
+        >
           <div className="flex items-center justify-center">
             <div className="">
               <div className="flex justify-center">
                 <img src="/dnd.svg" alt="" className="w-20" />
               </div>
-              <div className="text-[#4AA1F3]">Drag & Drop files here or click to select file(s)</div>
+              <div className="text-[#4AA1F3]">
+                Drag & Drop files here or click to select file(s)
+              </div>
             </div>
           </div>
-          <input ref={fileInputRef} className="file-input" type="file" multiple onChange={filesSelected} />
+          <input
+            ref={fileInputRef}
+            className="file-input"
+            type="file"
+            multiple
+            onChange={filesSelected}
+          />
         </div>
         <div className=" my-10">
           {validFiles.map((data, i) => (
-            <div className="my-2 flex w-5/12 items-center border-2 border-[#4AA1F3]" key={i}>
+            <div
+              className="my-2 flex w-5/12 items-center border-2 border-[#4AA1F3]"
+              key={i}
+            >
               <div className="flex ">
-                <div className="mr-2 h-fit w-14 w-fit bg-[#4AA1F3] p-0.5 text-center font-bold uppercase text-white">{fileType(data.name)}</div>
-                <span className={` text-[#4AA1F3] ${data.invalid ? 'text-red-600' : ''}`}>{data.name.length > 16 ? `${data.name.slice(0, 16)}...` : data.name}</span>
-                <span className="ml-1">({fileSize(data.size)})</span> {data.invalid && <span className="file-error-message">({errorMessage})</span>}
+                <div className="mr-2 h-fit w-14 w-fit bg-[#4AA1F3] p-0.5 text-center font-bold uppercase text-white">
+                  {fileType(data.name)}
+                </div>
+                <span
+                  className={` text-[#4AA1F3] ${
+                    data.invalid ? "text-red-600" : ""
+                  }`}
+                >
+                  {data.name.length > 16
+                    ? `${data.name.slice(0, 16)}...`
+                    : data.name}
+                </span>
+                <span className="ml-1">({fileSize(data.size)})</span>{" "}
+                {data.invalid && (
+                  <span className="file-error-message">({errorMessage})</span>
+                )}
               </div>
               <div className="ml-auto flex items-center ">
-                <div onClick={!data.invalid ? () => openImageModal(data) : () => removeFile(data.name)} className="mr-1">
+                <div
+                  onClick={
+                    !data.invalid
+                      ? () => openImageModal(data)
+                      : () => removeFile(data.name)
+                  }
+                  className="mr-1"
+                >
                   <img src="/look.svg" alt="" className="w-5" />
                 </div>
-                <div className=" bg-[#f83245] py-0.5 px-2 font-bold text-white" onClick={() => removeFile(data.name)}>
+                <div
+                  className=" bg-[#f83245] py-0.5 px-2 font-bold text-white"
+                  onClick={() => removeFile(data.name)}
+                >
                   X
                 </div>
               </div>
@@ -316,9 +382,21 @@ function AddMedia() {
           </div>
         </div>
       </div>
-      <SnackBarWrapper open={onMove} onClose={handleMoveEnd} severity="warning" message="Drag Mode On" />
+      <SnackBarWrapper
+        open={onMove}
+        onClose={handleMoveEnd}
+        severity="warning"
+        message="Drag Mode On"
+      />
       <div className="flex space-x-4 bg-white px-4 pb-8">
-        <ReactSortable swap list={sorCard} setList={setSorCard} onStart={handleMoveStart} onEnd={saveBoard} className="flex gap-4 flex-wrap">
+        <ReactSortable
+          swap
+          list={sorCard}
+          setList={setSorCard}
+          onStart={handleMoveStart}
+          onEnd={saveBoard}
+          className="flex gap-4 flex-wrap"
+        >
           {sorCard.map((data) => (
             <CardImage data={data} editNameData={sorCard} />
           ))}
@@ -329,3 +407,4 @@ function AddMedia() {
 }
 
 export default AddMedia;
+

@@ -28,7 +28,7 @@ export default function ListIphone(props) {
   });
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));

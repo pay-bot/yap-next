@@ -11,7 +11,7 @@ import SectionWrapper from "../../../../components/layout/SectionWrapper";
 
 export default function CreateNavigation() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { mutate: addNav } = useAddNavigationData();
 

@@ -8,6 +8,8 @@ import SafeHydrate from 'components/SafeHydrate';
 import store from '../features/store'
 import { MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
+import { CssBaseline } from '@mui/material';
+import LayoutWrapper from 'components/layout/LayoutWrapper';
 
 
 function MyApp({ Component, pageProps }) {
@@ -17,12 +19,14 @@ function MyApp({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <SafeHydrate>
         <Hydrate state={pageProps.dehydratedState}>
-         
-            <Provider store={store}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-            </Provider>
+
+          <Provider store={store}>
+            <LayoutWrapper>
+              {/* <Layout> */}
+              <Component {...pageProps} />
+              {/* </Layout> */}
+            </LayoutWrapper>
+          </Provider>
         </Hydrate>
       </SafeHydrate>
     </QueryClientProvider>

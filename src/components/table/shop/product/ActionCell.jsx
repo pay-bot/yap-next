@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import swal from 'sweetalert';
-import Edit from '../../../button/Edit';
-import Delete from '../../../button/Delete';
-import { deleteShopProducts } from '../../../../hooks/useShopProductsData';
-import AddMedia from '../../../button/AddMedia';
+import swal from "sweetalert";
+import Edit from "../../../button/Edit";
+import Delete from "../../../button/Delete";
+import { deleteShopProducts } from "../../../../hooks/useShopProductsData";
+import AddMedia from "../../../button/AddMedia";
 
 export default function ActionCell({ value, data }) {
   // console.log('band', data)
@@ -12,22 +12,24 @@ export default function ActionCell({ value, data }) {
   const queryClient = useQueryClient();
   const { mutateAsync: deleteCategory } = useMutation(deleteShopProducts, {
     onSuccess: () => {
-      queryClient.invalidateQueries('banners');
+      queryClient.invalidateQueries("banners");
     },
   });
   const removeCategory = async (id) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         deleteCategory(id);
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -40,9 +42,18 @@ export default function ActionCell({ value, data }) {
         if (prod.id.toString() === value.toString()) {
           return (
             <>
-              <AddMedia link={`/admin/shop/products/${value}/resources`} tooltip={`Add Media ${prod.name}`} />
-              <Edit tooltip={`Edit ${prod.name}`} link={`/admin/shop/products/${value}/edit`} />
-              <Delete tooltip={`Delete ${prod.name}`} onClick={() => removeCategory(value)} />
+              <AddMedia
+                link={`/admin/shop/products/${value}/resources`}
+                tooltip={`Add Media ${prod.name}`}
+              />
+              <Edit
+                tooltip={`Edit ${prod.name}`}
+                link={`/admin/shop/products/${value}/edit`}
+              />
+              <Delete
+                tooltip={`Delete ${prod.name}`}
+                onClick={() => removeCategory(value)}
+              />
             </>
           );
         }
@@ -51,3 +62,4 @@ export default function ActionCell({ value, data }) {
     </div>
   );
 }
+

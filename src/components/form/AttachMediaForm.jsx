@@ -1,15 +1,20 @@
-import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import InputContainer from '../input/InputContainer';
-import Submit from '../button/Submit';
-import SelectListApi from '../input/SelectListApi';
-import request from '../../utils/axios-utils';
-import { closeLoading, isReactLoading } from '../../features/reactLoadingSlice';
-import { closeModal } from '../../features/modal/modalSlice';
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import InputContainer from "../input/InputContainer";
+import Submit from "../button/Submit";
+import SelectListApi from "../input/SelectListApi";
+import request from "../../utils/axios-utils";
+import { closeLoading, isReactLoading } from "../../features/reactLoadingSlice";
+import { closeModal } from "../../features/modal/modalSlice";
 
-export default function AttachMediaForm({ dataMedia, photoable_id, photoable_type, httpPost }) {
+export default function AttachMediaForm({
+  dataMedia,
+  photoable_id,
+  photoable_type,
+  httpPost,
+}) {
   const {
     handleSubmit,
     control,
@@ -21,19 +26,19 @@ export default function AttachMediaForm({ dataMedia, photoable_id, photoable_typ
   const Attach = (data) => {
     return request({
       url: httpPost,
-      method: 'post',
+      method: "post",
       data,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" },
     });
   };
 
   const { mutateAsync: mediaAttach } = useMutation(Attach, {
     onSuccess: (e) => {
       if (e.request.status === 200) {
-        toast.success('Media has been attachced', { position: 'top-right' });
-        queryClient.invalidateQueries('medias');
+        toast.success("Media has been attachced", { position: "top-right" });
+        queryClient.invalidateQueries("medias");
       } else {
-        toast.error('Media failed to attacch  ', { position: 'top-right' });
+        toast.error("Media failed to attacch  ", { position: "top-right" });
       }
     },
   });
@@ -47,10 +52,10 @@ export default function AttachMediaForm({ dataMedia, photoable_id, photoable_typ
 
   const onSubmit = (data) => {
     const formData = new FormData();
-    formData.append('id', data.id);
-    formData.append('name', data.name);
-    formData.append('photoable_id', photoable_id);
-    formData.append('photoable_type', photoable_type);
+    formData.append("id", data.id);
+    formData.append("name", data.name);
+    formData.append("photoable_id", photoable_id);
+    formData.append("photoable_type", photoable_type);
     onSubmitMedia(formData);
   };
 
@@ -59,7 +64,9 @@ export default function AttachMediaForm({ dataMedia, photoable_id, photoable_typ
       <div className="w-full">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full">
-            <span className="flex justify-start py-2 text-xs">Attach a Media Component</span>
+            <span className="flex justify-start py-2 text-xs">
+              Attach a Media Component
+            </span>
             <div className="space-y-6">
               <InputContainer
                 name="name"
@@ -69,7 +76,15 @@ export default function AttachMediaForm({ dataMedia, photoable_id, photoable_typ
                 errors={errors.name}
               />
               <div className=" ">
-                <SelectListApi control={control} name="id" label="Media" fullWidth sx={{ marginBottom: '20px' }} size="small" options={dataMedia} />
+                <SelectListApi
+                  control={control}
+                  name="id"
+                  label="Media"
+                  fullWidth
+                  sx={{ marginBottom: "20px" }}
+                  size="small"
+                  options={dataMedia}
+                />
               </div>
               <Submit />
 
@@ -83,3 +98,4 @@ export default function AttachMediaForm({ dataMedia, photoable_id, photoable_typ
     </div>
   );
 }
+

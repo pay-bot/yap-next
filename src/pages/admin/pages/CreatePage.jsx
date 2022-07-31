@@ -13,7 +13,7 @@ import {
 import SectionWrapper from "../../../components/layout/SectionWrapper";
 
 export default function PageCreate() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const createPage = (data) => {

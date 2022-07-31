@@ -2,7 +2,7 @@
 // import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
 // import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 // import { useDispatch, useSelector } from 'react-redux';
-// import { useMutation, useQueryClient } from 'react-query';
+// import { useMutation, useQueryClient } from '@tanstack/react-query';
 // import Modal from 'react-modal';
 // import swal from 'sweetalert';
 // import { Button, PageButton } from '../../../shared/Button';
@@ -239,3 +239,4 @@
 // }
 
 // export default CommentTable;
+

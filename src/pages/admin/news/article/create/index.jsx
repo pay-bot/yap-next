@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import TitlePage from "../../../components/TitlePage";
-import ArticleForm from "../../../components/form/article/ArticleForm";
-// import { useAddArticleData } from "../../../hooks/useArticlesData";
-import ContentWrapper from "../../../components/layout/ContentWrapper";
+// import TitlePage from "components/TitlePage";
+import TitlePage from "components/TitlePage";
+import ArticleForm from "components/form/article/ArticleForm";
+// import { useAddArticleData } from "hooks/useArticlesData";
+import ContentWrapper from "components/layout/ContentWrapper";
 import {
   closeLoading,
   isReactLoading,
-} from "../../../features/reactLoadingSlice";
-import SectionWrapper from "../../../components/layout/SectionWrapper";
-import request from "../../../utils/axios-utils";
+} from "features/reactLoadingSlice";
+import SectionWrapper from "components/layout/SectionWrapper";
+import request from "utils/axios-utils";
 
 export default function CreateArticle() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useLocation } from 'react-router-dom';
+import { useRouter } from "next/router";
 import { useNavigationsData } from '../hooks/useNavigationsData';
 import { handleSideBar } from '../features/sideBarSlice';
 import _ from 'lodash';
@@ -8,6 +8,7 @@ import _ from 'lodash';
 
 export default function Header() {
   const dispatch = useDispatch();
+    const router = useRouter();
   const sidebar = useSelector((state) => state.sidebar.isOpen);
   const isLogin = useSelector((state) => state.authReducer);
 
@@ -15,12 +16,13 @@ export default function Header() {
 
   const { data: navs } = useNavigationsData();
 
-  const location = useLocation();
 
   // let parentId;
   // let parent = {};
 
-  const parentData = navs?.data?.filter((data) => location.pathname.includes(data.name.toLowerCase()));
+  const parentData = navs?.data?.filter((data) =>
+    router.pathname.includes(data.name.toLowerCase())
+  );
 
   const par = _.uniqBy(parentData, 'name');
 
@@ -70,3 +72,6 @@ export default function Header() {
     </div>
   );
 }
+
+
+

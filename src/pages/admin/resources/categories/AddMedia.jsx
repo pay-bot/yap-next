@@ -1,6 +1,6 @@
 // import { useEffect, useRef, useState } from 'react';
 // import { useParams } from 'react-router-dom';
-// import { queryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+// import { queryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 // import { toast } from 'react-toastify';
 // import Modal from '@mui/material/Modal';
 // import Box from '@mui/material/Box';
@@ -381,3 +381,4 @@
 // }
 
 // export default AddMedia;
+

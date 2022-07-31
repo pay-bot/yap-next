@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from 'react-query';
-import swal from 'sweetalert';
-import { useDispatch } from 'react-redux';
-import Edit from '../../../components/button/Edit';
-import { openModal } from '../../../features/modal/modalSlice';
-import { deleteMedias } from '../../../hooks/useMediaData';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import swal from "sweetalert";
+import { useDispatch } from "react-redux";
+import Edit from "../../../components/button/Edit";
+import { openModal } from "../../../features/modal/modalSlice";
+import { deleteMedias } from "../../../hooks/useMediaData";
 // import EditImageName from './EditImageName'
 
 export default function CardImage({ data }) {
@@ -12,24 +12,26 @@ export default function CardImage({ data }) {
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation(deleteMedias, {
     onSuccess: () => {
-      queryClient.invalidateQueries('medias');
+      queryClient.invalidateQueries("medias");
     },
   });
 
   const removeArticleMedia = async (id) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         mutateAsync(id);
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
-        queryClient.invalidateQueries('medias');
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+        queryClient.invalidateQueries("medias");
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -48,7 +50,11 @@ export default function CardImage({ data }) {
           onClick={() => console.log(data.id)}
         // defaultValue="female"
         /> */}
-        <button type="button" className="ml-auto rounded border-2 border-white p-1 hover:bg-[#f83245]" onClick={() => removeArticleMedia(data.id)}>
+        <button
+          type="button"
+          className="ml-auto rounded border-2 border-white p-1 hover:bg-[#f83245]"
+          onClick={() => removeArticleMedia(data.id)}
+        >
           <img src="/trash.svg" alt="" className="w-4" />
         </button>
       </div>
@@ -57,11 +63,21 @@ export default function CardImage({ data }) {
       </div>
       <div className="">
         <div className="flex bg-gray-300 p-2">
-          <div className="mr-auto">{data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name}</div>
-          <Edit tooltip={`Edit name ${data.name} `} onClick={() => dispatch(openModal({ componentName: 'EditNameImgArticle', id: data.id }))} />
+          <div className="mr-auto">
+            {data.name.length > 20 ? `${data.name.slice(0, 20)}...` : data.name}
+          </div>
+          <Edit
+            tooltip={`Edit name ${data.name} `}
+            onClick={() =>
+              dispatch(
+                openModal({ componentName: "EditNameImgArticle", id: data.id })
+              )
+            }
+          />
         </div>
         {/* <EditImageName imageName={editNameData} /> */}
       </div>
     </div>
   );
 }
+

@@ -1,16 +1,19 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import swal from 'sweetalert';
-import { toast } from 'react-toastify';
-import Edit from '../../../button/Edit';
-import Delete from '../../../button/Delete';
-import { deleteShopCategories } from '../../../../hooks/useShopCategoriesData';
-import CategoryForm from '../../../form/shop/CategoryForm';
-import ModalWrapper from '../../../modal/ModalWrapper';
-import { closeModal, openModal } from '../../../../features/modal/modalSlice';
-import { closeLoading, isReactLoading } from '../../../../features/reactLoadingSlice';
-import request from '../../../../utils/axios-utils';
+import swal from "sweetalert";
+import { toast } from "react-toastify";
+import Edit from "../../../button/Edit";
+import Delete from "../../../button/Delete";
+import { deleteShopCategories } from "../../../../hooks/useShopCategoriesData";
+import CategoryForm from "../../../form/shop/CategoryForm";
+import ModalWrapper from "../../../modal/ModalWrapper";
+import { closeModal, openModal } from "../../../../features/modal/modalSlice";
+import {
+  closeLoading,
+  isReactLoading,
+} from "../../../../features/reactLoadingSlice";
+import request from "../../../../utils/axios-utils";
 
 export default function ActionCell({ value, data }) {
   const dispatch = useDispatch();
@@ -21,42 +24,44 @@ export default function ActionCell({ value, data }) {
 
   const updateCategory = (dataCategory) => {
     return request({
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
       url: `/shop/categories/${id}`,
-      method: 'post',
+      method: "post",
       data: dataCategory,
     });
   };
 
   const { mutateAsync: mutateUpdate } = useMutation(updateCategory, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('shopCategories');
+      queryClient.invalidateQueries("shopCategories");
       if (e.request.status === 200) {
-        toast.success('Category has been created', { position: 'top-right' });
+        toast.success("Category has been created", { position: "top-right" });
       } else {
-        toast.error('Category failed to create  ', { position: 'top-right' });
+        toast.error("Category failed to create  ", { position: "top-right" });
       }
     },
   });
 
   const { mutateAsync: deleteCategory } = useMutation(deleteShopCategories, {
     onSuccess: () => {
-      queryClient.invalidateQueries('shopCategories');
+      queryClient.invalidateQueries("shopCategories");
     },
   });
   const removeCategory = async (idCat) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         deleteCategory(idCat);
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -76,8 +81,18 @@ export default function ActionCell({ value, data }) {
         if (cat.id === value) {
           return (
             <>
-              <Edit tooltip={`Edit ${cat.name}`} onClick={() => dispatch(openModal({ componentName: 'EditShopCat', id: value }))} />
-              <Delete tooltip={`Delete ${cat.name}`} onClick={() => removeCategory(value)} />
+              <Edit
+                tooltip={`Edit ${cat.name}`}
+                onClick={() =>
+                  dispatch(
+                    openModal({ componentName: "EditShopCat", id: value })
+                  )
+                }
+              />
+              <Delete
+                tooltip={`Delete ${cat.name}`}
+                onClick={() => removeCategory(value)}
+              />
             </>
           );
         }
@@ -103,3 +118,4 @@ export default function ActionCell({ value, data }) {
     </div>
   );
 }
+

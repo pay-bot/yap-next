@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import SectionWrapper from "./layout/SectionWrapper";
 
 export default function Coming() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <SectionWrapper>

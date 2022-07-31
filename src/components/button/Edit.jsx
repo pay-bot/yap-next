@@ -4,14 +4,14 @@ import TooltipWrapper from "../materialUI/TooltipWrapper";
 import { resetCollection } from "../../features/articleCollectionSlice";
 
 export default function Edit({ onClick, tooltip, link, bgHover, variant }) {
-    const router = useRouter();
+  const router = useRouter();
   const dispatch = useDispatch();
   return (
     <TooltipWrapper tooltip={tooltip}>
       {link ? (
         <button
           type="button"
-          onClick={() => [router.push(link), dispatch(resetCollection())]}
+          onClick={() => [navigate(link), dispatch(resetCollection())]}
         >
           <div
             // title={tooltip}
@@ -47,6 +47,4 @@ export default function Edit({ onClick, tooltip, link, bgHover, variant }) {
     </TooltipWrapper>
   );
 }
-
-
 

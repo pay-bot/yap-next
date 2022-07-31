@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
-import Modal from 'react-modal';
-import swal from 'sweetalert';
-import { closeModal } from '../../../../features/modal/modalSlice';
-import NavForm from '../../../form/NavForm';
-import { deleteNav, updateNav } from '../../../../hooks/useNavigationsData';
-import Edit from '../../../button/Edit';
-import Delete from '../../../button/Delete';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Modal from "react-modal";
+import swal from "sweetalert";
+import { closeModal } from "../../../../features/modal/modalSlice";
+import NavForm from "../../../form/NavForm";
+import { deleteNav, updateNav } from "../../../../hooks/useNavigationsData";
+import Edit from "../../../button/Edit";
+import Delete from "../../../button/Delete";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 export default function ActionCell({ value, data }) {
   // console.log('na', data)
@@ -20,27 +20,30 @@ export default function ActionCell({ value, data }) {
 
   const { id } = dataModal;
 
-  const { mutateAsync: mutateUpdate, isLoading: isMutatingUpdate } = useMutation(updateNav);
+  const { mutateAsync: mutateUpdate, isLoading: isMutatingUpdate } =
+    useMutation(updateNav);
 
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation(deleteNav, {
     onSuccess: () => {
-      queryClient.invalidateQueries('navigations');
+      queryClient.invalidateQueries("navigations");
     },
   });
   const removeNav = async (e) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         mutateAsync(e);
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -57,8 +60,14 @@ export default function ActionCell({ value, data }) {
         if (nav.id.toString() === value.toString()) {
           return (
             <>
-              <Edit tooltip={`Edit ${nav.name}`} link={`/admin/settings/navigations/${value}/edit`} />
-              <Delete tooltip={`Delete ${nav.name}`} onClick={() => removeNav(value)} />
+              <Edit
+                tooltip={`Edit ${nav.name}`}
+                link={`/admin/settings/navigations/${value}/edit`}
+              />
+              <Delete
+                tooltip={`Delete ${nav.name}`}
+                onClick={() => removeNav(value)}
+              />
             </>
           );
         }
@@ -76,7 +85,13 @@ export default function ActionCell({ value, data }) {
           {data.map((nav) => {
             let html;
             if (nav.id === dataModal.id) {
-              return <NavForm defaultValues={nav} onFormSubmit={onFormSubmit} isLoading={isMutatingUpdate} />;
+              return (
+                <NavForm
+                  defaultValues={nav}
+                  onFormSubmit={onFormSubmit}
+                  isLoading={isMutatingUpdate}
+                />
+              );
             }
             return html;
           })}
@@ -85,3 +100,4 @@ export default function ActionCell({ value, data }) {
     </div>
   );
 }
+

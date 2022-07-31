@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { format } from 'date-fns';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import 'react-quill/dist/quill.snow.css';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import FormWrapper from '../../layout/FormWrapper';
-import Submit from '../../button/Submit';
-import { useArticleCategoriesData } from '../../../hooks/useArticleCategoriesData';
-import InputContainer from '../../input/InputContainer';
-import DatePickerField from '../../input/DatePickerField';
-import CustomSelect from '../../input/CustomSelect';
-import { useArticleTagsData } from '../../../hooks/useArticleTagsData';
-import CheckBoxContainer from '../../input/CheckBoxContainer';
-import SelectListApi from '../../input/SelectListApi';
-import QuillWrapper from '../../input/QuillWrapper';
+import React, { useEffect, useReducer, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { format } from "date-fns";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import FormWrapper from "../../layout/FormWrapper";
+import Submit from "../../button/Submit";
+import { useArticleCategoriesData } from "../../../hooks/useArticleCategoriesData";
+import InputContainer from "../../input/InputContainer";
+import DatePickerField from "../../input/DatePickerField";
+import CustomSelect from "../../input/CustomSelect";
+import { useArticleTagsData } from "../../../hooks/useArticleTagsData";
+import CheckBoxContainer from "../../input/CheckBoxContainer";
+import SelectListApi from "../../input/SelectListApi";
+import Field from "components/molecules/field";
+import FormLinker from "form-linker";
+
+import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import Layout from "components/app";
 
 function ArticleForm({ defaultValues, onFormSubmit }) {
   const {
@@ -55,58 +58,70 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
   const onSubmit = (data) => {
     // console.log('tt', data.tags)
     const tagg = data.tags?.map((t) => t.id);
-    const isSame = arr?.length === tagg?.length && arr?.every((o, i) => Object.keys(o).length === Object.keys(tagg[i]).length && Object.keys(o).every((k) => o[k] === tagg[i][k]));
+    const isSame =
+      arr?.length === tagg?.length &&
+      arr?.every(
+        (o, i) =>
+          Object.keys(o).length === Object.keys(tagg[i]).length &&
+          Object.keys(o).every((k) => o[k] === tagg[i][k])
+      );
     const newData = data;
     let actFrom;
     if (newData.active_from === defaultValues?.active_from) {
       actFrom = defaultValues?.active_from;
-    } else actFrom = format(newData.active_from, 'yyyy-MM-dd');
+    } else actFrom = format(newData.active_from, "yyyy-MM-dd");
 
     let actTo;
     if (newData.active_to === defaultValues?.active_to) {
       actTo = defaultValues?.active_to;
-    } else actTo = format(newData.active_to, 'yyyy-MM-dd');
+    } else actTo = format(newData.active_to, "yyyy-MM-dd");
 
     const formData = new FormData();
     if (isSame) {
-      arr.forEach((tag) => formData.append('tags[]', tag));
-    } else data.tags?.forEach((tag) => formData.append('tags[]', tag));
+      arr.forEach((tag) => formData.append("tags[]", tag));
+    } else data.tags?.forEach((tag) => formData.append("tags[]", tag));
 
     if (defaultValues) {
-      formData.append('_method', 'PUT');
+      formData.append("_method", "PUT");
     }
-    formData.append('content', data.content ? data.content : '');
-    formData.append('name', data.name ? data.name : '');
-    formData.append('content_in', data.content_in ? data.content_in : '');
-    formData.append('name_in', data.name_in ? data.name_in : '');
-    formData.append('active_to', actTo ?? format(new Date(), 'yyyy-MM-dd'));
-    formData.append('action_name_in', data.action_name_in ? data.action_name_in : '');
-    formData.append('action_url', data.action_url ? data.action_url : '');
-    formData.append('category_id', fill?.length === 0 ? data.category_id : fill[0]?.category_id);
+    formData.append("content", data.content ? data.content : "");
+    formData.append("name", data.name ? data.name : "");
+    formData.append("content_in", data.content_in ? data.content_in : "");
+    formData.append("name_in", data.name_in ? data.name_in : "");
+    formData.append("active_to", actTo ?? format(new Date(), "yyyy-MM-dd"));
+    formData.append(
+      "action_name_in",
+      data.action_name_in ? data.action_name_in : ""
+    );
+    formData.append("action_url", data.action_url ? data.action_url : "");
+    formData.append(
+      "category_id",
+      fill?.length === 0 ? data.category_id : fill[0]?.category_id
+    );
     // formData.append("tags[]", data.tags)
-    formData.append('summary', data.summary ? data.summary : '');
-    formData.append('summary_in', data.summary_in ? data.summary_in : '');
-    formData.append('active_from', actFrom ?? format(new Date(), 'yyyy-MM-dd'));
+    formData.append("summary", data.summary ? data.summary : "");
+    formData.append("summary_in", data.summary_in ? data.summary_in : "");
+    formData.append("active_from", actFrom ?? format(new Date(), "yyyy-MM-dd"));
     let allowComment;
     if (parseInt(data.allow_comments, 10) === 1) {
-      allowComment = 'on';
-    } else allowComment = '';
-    formData.append('allow_comments', allowComment);
+      allowComment = "on";
+    } else allowComment = "";
+    formData.append("allow_comments", allowComment);
     onFormSubmit(formData);
   };
 
   useEffect(() => {
-    register('content', { required: true, minLength: 11 });
-    register('content_in', { required: true, minLength: 11 });
+    register("content", { required: true, minLength: 11 });
+    register("content_in", { required: true, minLength: 11 });
   }, [register]);
 
   const onEditorStateChange = (editorState) => {
-    setValue('content', editorState);
-    setValue('content_in', editorState);
+    setValue("content", editorState);
+    setValue("content_in", editorState);
   };
 
-  const editorContent = watch('content');
-  const editorContent_in = watch('content_in');
+  const editorContent = watch("content");
+  const editorContent_in = watch("content_in");
 
   const { data: categories } = useArticleCategoriesData();
 
@@ -120,9 +135,9 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
     };
   });
 
-  console.log('dev', defValTags);
+  console.log("dev", defValTags);
 
-  const [valueTab, setValueTab] = React.useState('1');
+  const [valueTab, setValueTab] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
@@ -132,13 +147,29 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
   // const active = new Date().toISOString().subStr(0, 10)
 
   const category = categories?.data?.map((cat) => cat);
+
+  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const formLinker = useRef(
+    new FormLinker({
+      data: {
+        editor: "",
+      },
+      schema: {
+        editor: "string",
+      },
+    })
+  );
   return (
     <FormWrapper>
       <div>
-        <Box sx={{ width: '100%', typography: 'body1' }}>
+        <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={valueTab}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+              >
                 <Tab label="English" value="1" />
                 <Tab label="Indonesia" value="2" />
               </TabList>
@@ -146,7 +177,15 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <TabPanel value="1">
                 <div className="">
-                  <Box sx={{ border: 1, borderColor: 'divider', padding: 2, margin: 2, borderRadius: 1 }}>
+                  <Box
+                    sx={{
+                      border: 1,
+                      borderColor: "divider",
+                      padding: 2,
+                      margin: 2,
+                      borderRadius: 1,
+                    }}
+                  >
                     <div className="flex w-full ">
                       <div className="w-4/12">Category</div>
                       <div className="w-8/12">
@@ -157,7 +196,7 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                               name="category_id"
                               label="Category"
                               fullWidth
-                              sx={{ marginBottom: '20px' }}
+                              sx={{ marginBottom: "20px" }}
                               size="small"
                               options={category}
                               // error={!!errors.age}
@@ -171,7 +210,7 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                               name="category_id"
                               label="Category"
                               fullWidth
-                              sx={{ marginBottom: '20px' }}
+                              sx={{ marginBottom: "20px" }}
                               size="small"
                               options={category}
                               defaultValue={fill[0]?.category?.id}
@@ -187,7 +226,7 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                             name="tags"
                             control={control}
                             // defaultValue={defValTagsUp}
-                            {...register('tags')}
+                            {...register("tags")}
                             render={({ field: { onChange } }) => (
                               <CustomSelect
                                 options={options}
@@ -196,7 +235,9 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                                 // getOptionValue={tags => tags?.data[0].name}
                                 defaultValue={defValTags}
                                 isMulti
-                                onChange={(v) => onChange(v?.map((val) => val.value))}
+                                onChange={(v) =>
+                                  onChange(v?.map((val) => val.value))
+                                }
                               />
                             )}
                           />
@@ -205,7 +246,15 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                     </div>
                   </Box>
                 </div>
-                <Box sx={{ border: 1, borderColor: 'divider', padding: 2, margin: 2, borderRadius: 1 }}>
+                <Box
+                  sx={{
+                    border: 1,
+                    borderColor: "divider",
+                    padding: 2,
+                    margin: 2,
+                    borderRadius: 1,
+                  }}
+                >
                   <div className="flex w-full ">
                     <div className="w-4/12">Article Detail</div>
                     <div className="w-8/12 space-y-5">
@@ -225,7 +274,7 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                       />
 
                       <DatePickerField
-                        sx={{ marginBottom: '20px' }}
+                        sx={{ marginBottom: "20px" }}
                         control={control}
                         name="active_from"
                         label="Active from"
@@ -236,7 +285,7 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                       />
 
                       <DatePickerField
-                        sx={{ marginBottom: '20px' }}
+                        sx={{ marginBottom: "20px" }}
                         control={control}
                         name="active_to"
                         label="Active to"
@@ -276,19 +325,47 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
 
                 <div className="flex gap-x-4" />
 
-                <Box sx={{ border: 1, borderColor: 'divider', padding: 2, margin: 2, borderRadius: 1 }}>
+                <Box
+                  sx={{
+                    border: 1,
+                    borderColor: "divider",
+                    padding: 2,
+                    margin: 2,
+                    borderRadius: 1,
+                  }}
+                >
                   <div className="flex w-full pb-5">
                     <div className="w-4/12">Article Content</div>
                     <div className="w-8/12">
                       <div className="relative my-6 w-full ">
-                        <QuillWrapper value={defaultValues?.content ? editorContent || defaultValues?.content?.content : editorContent || ''} onChange={onEditorStateChange} />
-                      </div>{' '}
+                        <Layout>
+                          <Field
+                            formLinker={formLinker.current}
+                            name="editor"
+                            type="editor"
+                            minHeight={150}
+                            height={620}
+                            maxHeight={800}
+                            placeholder="Enter your content here"
+                            toolbar={["withImages"]}
+                            onChange={forceUpdate}
+                          />
+                        </Layout>
+                      </div>{" "}
                     </div>
                   </div>
                 </Box>
               </TabPanel>
               <TabPanel value="2">
-                <Box sx={{ border: 1, borderColor: 'divider', padding: 2, margin: 2, borderRadius: 1 }}>
+                <Box
+                  sx={{
+                    border: 1,
+                    borderColor: "divider",
+                    padding: 2,
+                    margin: 2,
+                    borderRadius: 1,
+                  }}
+                >
                   <div className="flex w-full pb-5">
                     <div className="w-4/12">Article Description</div>
                     <div className="w-8/12 space-y-5">
@@ -313,12 +390,7 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
                         label="Nama Aksi"
                         errors={errors.name}
                       />
-                      <div className="relative pb-6 w-full ">
-                        <QuillWrapper
-                          value={defaultValues?.content_in ? editorContent_in || defaultValues?.content_in?.content_in : editorContent_in || ''}
-                          onChange={onEditorStateChange}
-                        />
-                      </div>{' '}
+                      <div className="relative pb-6 w-full "></div>{" "}
                     </div>
                   </div>
                 </Box>
@@ -334,3 +406,4 @@ function ArticleForm({ defaultValues, onFormSubmit }) {
 }
 
 export default ArticleForm;
+

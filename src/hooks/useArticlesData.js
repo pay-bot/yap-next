@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 // import axios from 'axios'
 import request from '../utils/axios-utils';
 
@@ -6,7 +6,7 @@ const fetchArticle = () =>
   // return axios.get('http://localhost:4000/news/articles')
   request({ url: '/news/articles' });
 export const useArticlesData = (onSuccess, onError) =>
-  useQuery('articles', fetchArticle, {
+  useQuery(['articles'], fetchArticle, {
     onSuccess,
     onError,
   });

@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next -p 8080",
+    "dev": "next -p 8081",
     "build": "next build",
     "start": "next start"
   },

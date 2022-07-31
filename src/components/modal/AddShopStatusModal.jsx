@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import { closeModal } from '../../features/modal/modalSlice';
-import request from '../../utils/axios-utils';
-import ModalWrapper from './ModalWrapper';
-import { closeLoading, isReactLoading } from '../../features/reactLoadingSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { closeModal } from "../../features/modal/modalSlice";
+import request from "../../utils/axios-utils";
+import ModalWrapper from "./ModalWrapper";
+import { closeLoading, isReactLoading } from "../../features/reactLoadingSlice";
 
-import CategoryForm from '../form/category/CategoryForm';
+import CategoryForm from "../form/category/CategoryForm";
 
 export default function AddShopStatusModal() {
   const dispatch = useDispatch();
@@ -15,19 +15,19 @@ export default function AddShopStatusModal() {
   const createFeature = (data) => {
     return request({
       url: `/shop/status`,
-      method: 'post',
+      method: "post",
       data,
     });
   };
 
   const { mutateAsync } = useMutation(createFeature, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('shopStatuses');
-      console.log('d', e);
+      queryClient.invalidateQueries("shopStatuses");
+      console.log("d", e);
       if (e.request.status === 200) {
-        toast.success('Feature has been created', { position: 'top-right' });
+        toast.success("Feature has been created", { position: "top-right" });
       } else {
-        toast.error('Feature failed to create  ', { position: 'top-right' });
+        toast.error("Feature failed to create  ", { position: "top-right" });
       }
     },
   });
@@ -43,7 +43,12 @@ export default function AddShopStatusModal() {
 
   return (
     <ModalWrapper componentName="AddShopStatus" modalid={dataModal.id}>
-      <CategoryForm onFormSubmit={onSubmitArticleCat} isLoading="" name="AddShopStatus" />
+      <CategoryForm
+        onFormSubmit={onSubmitArticleCat}
+        isLoading=""
+        name="AddShopStatus"
+      />
     </ModalWrapper>
   );
 }
+

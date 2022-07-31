@@ -1,23 +1,30 @@
-import { useState } from 'react';
-import { useQueryClient } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import TitlePage from '../../../components/TitlePage';
+import { useState } from "react";
+import { useQueryClient } from "react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import TitlePage from "../../../components/TitlePage";
 
-import { closeLoading, isReactLoading } from '../../../features/reactLoadingSlice';
+import {
+  closeLoading,
+  isReactLoading,
+} from "../../../features/reactLoadingSlice";
 
-import { useArticleDetail, useUpdateArticle } from '../../../hooks/useArticlesData';
-import ArticleForm from '../../../components/form/article/ArticleForm';
-import SectionWrapper from '../../../components/layout/SectionWrapper';
+import {
+  useArticleDetail,
+  useUpdateArticle,
+} from "../../../hooks/useArticlesData";
+import ArticleForm from "../../../components/form/article/ArticleForm";
+import SectionWrapper from "../../../components/layout/SectionWrapper";
 
 export default function EditArticle(props) {
   const [dataArticleDetail, setDataArticleDetail] = useState(null);
   const { articleId } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const { isLoading, data, isError, error, isSuccess } = useArticleDetail(articleId);
+  const { isLoading, data, isError, error, isSuccess } =
+    useArticleDetail(articleId);
 
   console.log(dataArticleDetail);
 
@@ -33,7 +40,13 @@ export default function EditArticle(props) {
 
   return (
     <SectionWrapper>
-      <ArticleForm key={data?.data?.article[0].id} defaultValues={data?.data?.article[0]} onFormSubmit={onSubmitArticle} />;
+      <ArticleForm
+        key={data?.data?.article[0].id}
+        defaultValues={data?.data?.article[0]}
+        onFormSubmit={onSubmitArticle}
+      />
+      ;
     </SectionWrapper>
   );
 }
+

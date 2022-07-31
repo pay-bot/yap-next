@@ -1,18 +1,24 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
-import swal from 'sweetalert';
-import { toast } from 'react-toastify';
-import { closeModal, openModal } from '../../../../features/modal/modalSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import swal from "sweetalert";
+import { toast } from "react-toastify";
+import { closeModal, openModal } from "../../../../features/modal/modalSlice";
 
-import Delete from '../../../button/Delete';
-import { deleteResource, updateResources } from '../../../../hooks/useResourcesData';
-import Edit from '../../../button/Edit';
+import Delete from "../../../button/Delete";
+import {
+  deleteResource,
+  updateResources,
+} from "../../../../hooks/useResourcesData";
+import Edit from "../../../button/Edit";
 
-import AddMedia from '../../../button/AddMedia';
-import CategoryForm from '../../../form/category/CategoryForm';
+import AddMedia from "../../../button/AddMedia";
+import CategoryForm from "../../../form/category/CategoryForm";
 
-import ModalWrapper from '../../../modal/ModalWrapper';
-import { closeLoading, isReactLoading } from '../../../../features/reactLoadingSlice';
+import ModalWrapper from "../../../modal/ModalWrapper";
+import {
+  closeLoading,
+  isReactLoading,
+} from "../../../../features/reactLoadingSlice";
 
 export default function ActionCell({ value, data }) {
   const dispatch = useDispatch();
@@ -20,35 +26,38 @@ export default function ActionCell({ value, data }) {
   const dataModal = useSelector((state) => state.modal);
   // console.log("in", dataModal);
 
-  const { mutateAsync: mutateUpdate, isLoading: isMutatingUpdate } = useMutation(updateResources, {
-    onSuccess: (e) => {
-      queryClient.invalidateQueries('resourcesCategory');
-      if (e.request.status === 200) {
-        toast.success('Category has been created', { position: 'top-right' });
-      } else {
-        toast.error('Category failed to create  ', { position: 'top-right' });
-      }
-    },
-  });
+  const { mutateAsync: mutateUpdate, isLoading: isMutatingUpdate } =
+    useMutation(updateResources, {
+      onSuccess: (e) => {
+        queryClient.invalidateQueries("resourcesCategory");
+        if (e.request.status === 200) {
+          toast.success("Category has been created", { position: "top-right" });
+        } else {
+          toast.error("Category failed to create  ", { position: "top-right" });
+        }
+      },
+    });
 
   const { mutateAsync: deleteResources } = useMutation(deleteResource, {
     onSuccess: () => {
-      queryClient.invalidateQueries('resourcesCategory');
+      queryClient.invalidateQueries("resourcesCategory");
     },
   });
   const removeResource = async (id) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         deleteResources(id);
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -69,9 +78,25 @@ export default function ActionCell({ value, data }) {
           if (re.id === value) {
             return (
               <>
-                <AddMedia link={`/admin/resources/resource-category/${value}/resources`} tooltip={`Add Media ${re.name}`} />
-                <Edit tooltip={`Edit ${re.name}`} onClick={() => dispatch(openModal({ componentName: 'EditResourceCategory', id: value }))} />
-                <Delete tooltip={`Delete ${re.name}`} onClick={() => removeResource(value)} />
+                <AddMedia
+                  link={`/admin/resources/resource-category/${value}/resources`}
+                  tooltip={`Add Media ${re.name}`}
+                />
+                <Edit
+                  tooltip={`Edit ${re.name}`}
+                  onClick={() =>
+                    dispatch(
+                      openModal({
+                        componentName: "EditResourceCategory",
+                        id: value,
+                      })
+                    )
+                  }
+                />
+                <Delete
+                  tooltip={`Delete ${re.name}`}
+                  onClick={() => removeResource(value)}
+                />
               </>
             );
           }
@@ -83,7 +108,14 @@ export default function ActionCell({ value, data }) {
           let html;
 
           if (re.id.toString() === dataModal.id.toString()) {
-            return <CategoryForm defaultValues={re} key={re.id} onFormSubmit={onFormSubmit} isLoading={isMutatingUpdate} />;
+            return (
+              <CategoryForm
+                defaultValues={re}
+                key={re.id}
+                onFormSubmit={onFormSubmit}
+                isLoading={isMutatingUpdate}
+              />
+            );
           }
           return html;
         })}
@@ -91,3 +123,4 @@ export default function ActionCell({ value, data }) {
     </>
   );
 }
+

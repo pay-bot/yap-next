@@ -1,5 +1,5 @@
 // import { useDispatch, useSelector } from 'react-redux';
-// import { useMutation, useQueryClient } from 'react-query';
+// import { useMutation, useQueryClient } from '@tanstack/react-query';
 // import swal from 'sweetalert';
 // import { toast } from 'react-toastify';
 // import { closeModal, openModal } from '../../../../features/modal/modalSlice';
@@ -91,3 +91,4 @@
 //     </div>
 //   );
 // }
+

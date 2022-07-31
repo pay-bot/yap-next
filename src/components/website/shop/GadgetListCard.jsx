@@ -1,15 +1,28 @@
 // import DirectModal from "./DirectModal";
 // import { addToCart } from "../features/cartSlice";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
-export default function GadgetListCard({ name, image, amount, onClickBuy, onClickModal, modalItemName, showModal, closeModal }) {
+export default function GadgetListCard({
+  name,
+  image,
+  amount,
+  onClickBuy,
+  onClickModal,
+  modalItemName,
+  showModal,
+  closeModal,
+}) {
   return (
     <div className="bg-white rounded-xl ">
       <div className="p-8">
         <p className="text-left text-xs font-bold">NEW</p>
-        <button type="button" onClick={onClickModal} className="text-left pb-4 text-xl font-bold">
+        <button
+          type="button"
+          onClick={onClickModal}
+          className="text-left pb-4 text-xl font-bold"
+        >
           {name}
         </button>
         <div className="w-full 2xl:h-96 h-60 flex justify-center ">
@@ -19,7 +32,11 @@ export default function GadgetListCard({ name, image, amount, onClickBuy, onClic
           <div className="py-4">Color</div>
           <div className="flex justify-between">
             <span className="price">${amount}</span>
-            <button type="button" onClick={onClickBuy} className="bg-blue-500  px-3 py-1 rounded-2xl text-white font-semibold">
+            <button
+              type="button"
+              onClick={onClickBuy}
+              className="bg-blue-500  px-3 py-1 rounded-2xl text-white font-semibold"
+            >
               Buy
             </button>
           </div>
@@ -47,7 +64,7 @@ export default function GadgetListCard({ name, image, amount, onClickBuy, onClic
 
 // import { useDispatch, useSelector } from "react-redux";
 // import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+// import { useRouter } from 'next/router';
 // import DirectModal from "./DirectModal";
 // import { addToCart } from "../features/cartSlice";
 // import Modal from "react-modal";
@@ -65,7 +82,7 @@ export default function GadgetListCard({ name, image, amount, onClickBuy, onClic
 //   const handleShow = () => setShow(true);
 //   const handleClose = () => setShow(false);
 //   const dispatch = useDispatch();
-//   const navigate = useNavigate();
+//   const router = useRouter();
 
 //   const handleAddToCart = (product) => {
 //     dispatch(addToCart(product));
@@ -113,3 +130,4 @@ export default function GadgetListCard({ name, image, amount, onClickBuy, onClic
 //     </div>
 //   );
 // }
+

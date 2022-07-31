@@ -1,17 +1,21 @@
-import { useDispatch, useSelector } from 'react-redux';
-import Add from '../../../components/button/Add';
-import Delete from '../../../components/button/Delete';
-import Edit from '../../../components/button/Edit';
-import { useCollectionDetail, useDestroyCollMenu, useUpdateCollection } from '../../../hooks/useCollectionMenusData';
-import ModalWrapper from '../../../components/modal/ModalWrapper';
-import CollectionForm from '../../../components/form/menu/CollectionForm';
-import { openModal } from '../../../features/modal/modalSlice';
-import { isSubmitOn } from '../../../features/crudSlice';
-import { useState } from 'react';
-// import { Button } from '@mui/material';
-import swal from 'sweetalert';
-import { useMutation } from '@tanstack/react-query';
-import request from '../../../utils/axios-utils';
+import { useDispatch, useSelector } from "react-redux";
+import Add from "../../../components/button/Add";
+import Delete from "../../../components/button/Delete";
+import Edit from "../../../components/button/Edit";
+import {
+  useCollectionDetail,
+  useDestroyCollMenu,
+  useUpdateCollection,
+} from "../../../hooks/useCollectionMenusData";
+import ModalWrapper from "../../../components/modal/ModalWrapper";
+import CollectionForm from "../../../components/form/menu/CollectionForm";
+import { openModal } from "../../../features/modal/modalSlice";
+import { isSubmitOn } from "../../../features/crudSlice";
+import { useState } from "react";
+import { Button } from "@mui/material";
+import swal from "sweetalert";
+import { useMutation } from "@tanstack/react-query";
+import request from "../../../utils/axios-utils";
 
 export default function CollectionCard({ data }) {
   const dispatch = useDispatch();
@@ -33,7 +37,9 @@ export default function CollectionCard({ data }) {
       setBulkMenuDel(newSelection);
     } else {
       const newSelection = bulkMenuDel;
-      const newSubs = newSelection.filter((sub) => parseInt(sub) !== parseInt(value));
+      const newSubs = newSelection.filter(
+        (sub) => parseInt(sub) !== parseInt(value)
+      );
       setBulkMenuDel(newSubs);
     }
   };
@@ -44,15 +50,20 @@ export default function CollectionCard({ data }) {
     await updateCollection(dataMenu);
   };
 
-  const { isLoading, data: collectionDetail, isError, error, isSuccess } = useCollectionDetail(id);
+  const {
+    isLoading,
+    data: collectionDetail,
+    isError,
+    error,
+    isSuccess,
+  } = useCollectionDetail(id);
 
   const removeCollMenu = useDestroyCollMenu();
-
 
   const deleteMenu = async (data) =>
     request({
       url: `/menus/collections/bulk_delete`,
-      method: 'delete',
+      method: "delete",
       data,
     });
 
@@ -62,35 +73,35 @@ export default function CollectionCard({ data }) {
     },
   });
 
-
   const onDestroyMenu = async (data) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         destroyMenus({ ids: data });
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
 
   return (
     <div className="grid grid-cols-3 gap-3">
-      {/* <Button
-        color="success"
+      <Button
         onClick={() => onDestroyMenu(bulkMenuDel)}
         className="ml-auto flex bg-red-600 text-white"
         type="button"
         variant="filled"
       >
         Delete Selected Menu
-      </Button> */}
+      </Button>
       {data?.map((dataMenu) => (
         <div key={dataMenu.id} className="">
           <div className="bg-indigo-300 px-3 py-2 text-white font-semibold flex relative">

@@ -1,12 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
-import request from '../../utils/axios-utils';
-import { closeModal } from '../../features/modal/modalSlice';
-import MenuForm from '../form/menu/Form';
-import ModalWrapper from './ModalWrapper';
-import { closeLoading, isReactLoading } from '../../features/reactLoadingSlice';
+import request from "../../utils/axios-utils";
+import { closeModal } from "../../features/modal/modalSlice";
+import MenuForm from "../form/menu/Form";
+import ModalWrapper from "./ModalWrapper";
+import { closeLoading, isReactLoading } from "../../features/reactLoadingSlice";
 
 export default function AddMenuModal() {
   const dispatch = useDispatch();
@@ -15,18 +15,18 @@ export default function AddMenuModal() {
   const createMenu = (data) => {
     return request({
       url: `/menus`,
-      method: 'post',
+      method: "post",
       data,
     });
   };
 
   const { mutateAsync } = useMutation(createMenu, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('menus');
+      queryClient.invalidateQueries("menus");
       if (e.request.status === 200) {
-        toast.success('Menu has been created', { position: 'top-right' });
+        toast.success("Menu has been created", { position: "top-right" });
       } else {
-        toast.error('Menu failed to create  ', { position: 'top-right' });
+        toast.error("Menu failed to create  ", { position: "top-right" });
       }
     },
   });
@@ -41,8 +41,12 @@ export default function AddMenuModal() {
   const dataModal = useSelector((state) => state.modal);
 
   return (
-    <ModalWrapper componentName={dataModal.componentName} modalid={dataModal.id}>
+    <ModalWrapper
+      componentName={dataModal.componentName}
+      modalid={dataModal.id}
+    >
       <MenuForm onFormSubmit={onSubmitMenu} isLoading="" />
     </ModalWrapper>
   );
 }
+

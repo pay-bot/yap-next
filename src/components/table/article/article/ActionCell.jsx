@@ -1,36 +1,38 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import swal from 'sweetalert';
-import { deleteArticle } from '../../../../hooks/useArticlesData';
-import Edit from '../../../button/Edit';
-import Delete from '../../../button/Delete';
-import AddMedia from '../../../button/AddMedia';
+import swal from "sweetalert";
+import { deleteArticle } from "../../../../hooks/useArticlesData";
+import Edit from "../../../button/Edit";
+import Delete from "../../../button/Delete";
+import AddMedia from "../../../button/AddMedia";
 
 export default function ActionCell({ value, data }) {
   const queryClient = useQueryClient();
   const { mutateAsync } = useMutation(deleteArticle, {
     onSuccess: () => {
-      queryClient.invalidateQueries('articles');
-      queryClient.invalidateQueries('sectionsContent');
-      queryClient.invalidateQueries('sections');
+      queryClient.invalidateQueries("articles");
+      queryClient.invalidateQueries("sectionsContent");
+      queryClient.invalidateQueries("sections");
     },
   });
   const removeArticle = async (id) => {
     await swal({
-      title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this imaginary file!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
         mutateAsync(id);
-        queryClient.invalidateQueries('articles');
-        queryClient.invalidateQueries('sectionsContent');
-        queryClient.invalidateQueries('sections');
-        swal('Poof! Your imaginary file has been deleted!', { icon: 'success' });
+        queryClient.invalidateQueries("articles");
+        queryClient.invalidateQueries("sectionsContent");
+        queryClient.invalidateQueries("sections");
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
       } else {
-        swal('Your imaginary file is safe!');
+        swal("Your imaginary file is safe!");
       }
     });
   };
@@ -42,9 +44,18 @@ export default function ActionCell({ value, data }) {
         if (art.id.toString() === value.toString()) {
           return (
             <>
-              <AddMedia link={`/admin/news/articles/${value}/media`} tooltip={`Add Media ${art.name}`} />
-              <Edit link={`/admin/news/articles/${value}/edit`} tooltip={`Edit ${art.name}`} />
-              <Delete onClick={() => removeArticle(value)} tooltip={`Delete ${art.name}`} />
+              <AddMedia
+                link={`/admin/news/articles/${value}/media`}
+                tooltip={`Add Media ${art.name}`}
+              />
+              <Edit
+                link={`/admin/news/articles/${value}/edit`}
+                tooltip={`Edit ${art.name}`}
+              />
+              <Delete
+                onClick={() => removeArticle(value)}
+                tooltip={`Delete ${art.name}`}
+              />
             </>
           );
         }
@@ -53,3 +64,4 @@ export default function ActionCell({ value, data }) {
     </div>
   );
 }
+

@@ -14,7 +14,7 @@ import FormWrapper from "../../../../components/layout/FormWrapper";
 import ClientForm from "../../../../components/form/accounts/clients/ClientForm";
 
 export default function CreateClient() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const createContent = (data) => {

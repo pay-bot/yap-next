@@ -1,15 +1,18 @@
-import { useQuery } from 'react-query';
-import Benefits from '../../components/website/new-home/Benefits';
-import Features from '../../components/website/new-home/Features';
-import Hero from '../../components/website/new-home/Hero';
-import PriceTable from '../../components/website/new-home/PriceTable';
-import { fetchSections } from '../../hooks/useSectionsData';
-import WebLayout from '../../components/website/layout/WebLayout';
+import { useQuery } from "@tanstack/react-query";
+import Benefits from "../../components/website/new-home/Benefits";
+import Features from "../../components/website/new-home/Features";
+import Hero from "../../components/website/new-home/Hero";
+import PriceTable from "../../components/website/new-home/PriceTable";
+import { fetchSections } from "../../hooks/useSectionsData";
+import WebLayout from "../../components/website/layout/WebLayout";
 // import { useMenuData } from '../../hooks/useMenusData';
 
 export default function NewHome() {
   const pageId = 1;
-  const { data: section, isSuccess } = useQuery(['sections', { pageId }], fetchSections);
+  const { data: section, isSuccess } = useQuery(
+    ["sections", { pageId }],
+    fetchSections
+  );
 
   return (
     <>
@@ -44,3 +47,4 @@ export default function NewHome() {
     </>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 // import axios from 'axios'
 import axios from 'axios';
 import request from '../utils/axios-utils';
@@ -7,7 +7,7 @@ const fetchNavigations = () =>
   // return axios.get('http://localhost:4000/Navigations')
   request({ url: '/settings/navigations' });
 export const useNavigationsData = (onSuccess, onError) =>
-  useQuery('navigations', fetchNavigations, {
+  useQuery(['navigations'], fetchNavigations, {
     onSuccess,
     onError,
   });

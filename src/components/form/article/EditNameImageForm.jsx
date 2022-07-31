@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useMutation, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import { closeModal } from '../../../features/modal/modalSlice';
-import Submit from '../../button/Submit';
-import InputContainer from '../../input/InputContainer';
-import request from '../../../utils/axios-utils';
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { closeModal } from "../../../features/modal/modalSlice";
+import Submit from "../../button/Submit";
+import InputContainer from "../../input/InputContainer";
+import request from "../../../utils/axios-utils";
 
 function EditNameImageForm({ defaultValues, httpPost }) {
   const {
@@ -23,20 +23,20 @@ function EditNameImageForm({ defaultValues, httpPost }) {
   const editName = (data) => {
     return request({
       url: httpPost,
-      method: 'post',
+      method: "post",
       data,
     });
   };
 
   const { mutateAsync } = useMutation(editName, {
     onSuccess: (e) => {
-      queryClient.invalidateQueries('medias');
+      queryClient.invalidateQueries("medias");
 
       if (e.request.status === 200) {
-        toast.success('Image name has been updated', { position: 'top-right' });
+        toast.success("Image name has been updated", { position: "top-right" });
         closeModalHandler();
       } else {
-        toast.error('Image name failed to update  ', { position: 'top-right' });
+        toast.error("Image name failed to update  ", { position: "top-right" });
         closeModalHandler();
       }
     },
@@ -52,10 +52,16 @@ function EditNameImageForm({ defaultValues, httpPost }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <InputContainer name="name" control={control} label="Name" errors={errors.name} />
+      <InputContainer
+        name="name"
+        control={control}
+        label="Name"
+        errors={errors.name}
+      />
       <Submit className="mt-0" />
     </form>
   );
 }
 
 export default EditNameImageForm;
+

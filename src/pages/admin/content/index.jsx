@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import _ from 'lodash';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { toast } from 'react-toastify';
-import { ReactSortable } from 'react-sortablejs';
-import { fetchSections } from '../../../hooks/useSectionsData';
-import TitlePage from '../../../components/TitlePage';
-import SectionWrapper from '../../../components/layout/SectionWrapper';
-import AttachContent from './AttachContent';
-import request from '../../../utils/axios-utils';
-import ContentCard from './ContentCard';
-import Add from '../../../components/button/Add';
-import ContentHeading from '../../../components/layout/ContentHeading';
-import SnackBarWrapper from '../../../components/materialUI/SnackBarWrapper';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import _ from "lodash";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { ReactSortable } from "react-sortablejs";
+import { fetchSections } from "../../../hooks/useSectionsData";
+import TitlePage from "../../../components/TitlePage";
+import SectionWrapper from "../../../components/layout/SectionWrapper";
+import AttachContent from "./AttachContent";
+import request from "../../../utils/axios-utils";
+import ContentCard from "./ContentCard";
+import Add from "../../../components/button/Add";
+import ContentHeading from "../../../components/layout/ContentHeading";
+import SnackBarWrapper from "../../../components/materialUI/SnackBarWrapper";
 
 export default function Content() {
   const { pageId, sectionId } = useParams();
@@ -27,7 +27,10 @@ export default function Content() {
     setOnMove(false);
   };
 
-  const { data: section, isSuccess } = useQuery(['sections', { pageId }], fetchSections);
+  const { data: section, isSuccess } = useQuery(
+    ["sections", { pageId }],
+    fetchSections
+  );
   const attachContent = isSuccess ? section?.data?.content : [];
 
   const attach = Object.entries(attachContent).map(([id, name]) => {
@@ -52,9 +55,9 @@ export default function Content() {
   const createContent = (data) => {
     return request({
       url: `/pages/${pageId}/sections/${sectionId}/content/attach`,
-      method: 'post',
+      method: "post",
       data,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" },
     });
   };
 
@@ -62,13 +65,13 @@ export default function Content() {
     onSuccess: (e) => {
       // console.log('d', e)
       if (e.request.status === 200) {
-        toast.success('Content has been created', { position: 'top-right' });
-        queryClient.invalidateQueries('sections');
+        toast.success("Content has been created", { position: "top-right" });
+        queryClient.invalidateQueries("sections");
         // navigate('/admin/pages');
         // dispatch(closeLoading());
         // navigate(`/admin/pages/${pageId}/sections`);
       } else {
-        toast.error('Content failed to create  ', { position: 'top-right' });
+        toast.error("Content failed to create  ", { position: "top-right" });
         // dispatch(closeLoading());
       }
     },
@@ -84,7 +87,7 @@ export default function Content() {
   vipotContent.map((data) => {
     if (data.id.toString() === sectionId.toString()) {
       sectionName = data.name;
-      console.log('df', data);
+      console.log("df", data);
       return (
         <>
           {data.components.map((comp) => {
@@ -96,7 +99,7 @@ export default function Content() {
     return null;
   });
 
-  const sortedCont = isSuccess ? _.sortBy(dataCont, 'list_order') : [];
+  const sortedCont = isSuccess ? _.sortBy(dataCont, "list_order") : [];
 
   const [sorCont, setSorCont] = useState([]);
   useEffect(() => {
@@ -111,19 +114,19 @@ export default function Content() {
   const orderContent = (data) => {
     return request({
       url: `/pages/${pageId}/sections/${sectionId}/content/order`,
-      method: 'post',
+      method: "post",
       data,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" },
     });
   };
 
   const { mutateAsync: saveSortCont } = useMutation(orderContent, {
     onSuccess: (e) => {
       if (e.request.status === 200) {
-        toast.success('Content has been sorted', { position: 'top-right' });
+        toast.success("Content has been sorted", { position: "top-right" });
         // dispatch(closeLoading());
       } else {
-        toast.error('Content failed to sorted', { position: 'top-right' });
+        toast.error("Content failed to sorted", { position: "top-right" });
         // dispatch(closeLoading());
       }
     },
@@ -131,7 +134,7 @@ export default function Content() {
 
   async function saveBoard() {
     const formData = new FormData();
-    formData.append('list', JSON.stringify(dndCont));
+    formData.append("list", JSON.stringify(dndCont));
     await saveSortCont(formData);
     handleMoveEnd();
   }
@@ -150,17 +153,30 @@ export default function Content() {
 
   return (
     <SectionWrapper>
-      
       <ContentHeading>
         <div className="w-full">
           <div className="pb-4">
-            <Add link={`/admin/pages/${pageId}/sections/${sectionId}/content/create`} title="Create Content" />
+            <Add
+              link={`/admin/pages/${pageId}/sections/${sectionId}/content/create`}
+              title="Create Content"
+            />
           </div>
           <AttachContent dataContent={fill} onFormSubmit={onSubmitContent} />
         </div>
       </ContentHeading>
-      <SnackBarWrapper open={onMove} onClose={handleMoveEnd} severity="warning" message="Drag Mode On" />
-      <ReactSortable swap list={sorCont} setList={setSorCont} onEnd={saveBoard} onStart={handleMoveStart}>
+      <SnackBarWrapper
+        open={onMove}
+        onClose={handleMoveEnd}
+        severity="warning"
+        message="Drag Mode On"
+      />
+      <ReactSortable
+        swap
+        list={sorCont}
+        setList={setSorCont}
+        onEnd={saveBoard}
+        onStart={handleMoveStart}
+      >
         {sorCont.map((data) => (
           <ContentCard key={data.id} data={data} />
         ))}
@@ -170,3 +186,4 @@ export default function Content() {
     </SectionWrapper>
   );
 }
+
