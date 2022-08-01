@@ -4,12 +4,13 @@ import Header from "../Header";
 import SideBar from "../Sidebar/SideBar";
 import Footer from "../Footer";
 import { withProtected } from "helper/routeProtection";
+import SidebarNew from "components/Sidebar/SidebarNew";
 
 function LayoutWrapper({ children }) {
   const sidebar = useSelector((state) => state.sidebar.isOpen);
   return (
-    <div className="flex overflow-hidden">
-      <SideBar />
+    <div className="flex main">
+      <SidebarNew />
       
       <Footer>
         <div className="w-full">

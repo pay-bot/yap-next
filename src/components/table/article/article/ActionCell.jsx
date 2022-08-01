@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import swal from "sweetalert";
 import { deleteArticle } from "../../../../hooks/useArticlesData";
 import Edit from "../../../button/Edit";
 import Delete from "../../../button/Delete";
 import AddMedia from "../../../button/AddMedia";
+import React from "react";
 
 export default function ActionCell({ value, data }) {
   const queryClient = useQueryClient();
@@ -64,4 +64,3 @@ export default function ActionCell({ value, data }) {
     </div>
   );
 }
-
