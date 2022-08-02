@@ -8,6 +8,7 @@ import _ from 'lodash';
 import SidebarMenu from './SidebarMenu';
 import { useNavigationsData } from '../../hooks/useNavigationsData';
 import Link from 'next/link';
+import sideBarItem from './sidebarItem';
 
 function SideBar({ offLayout }) {
   const { isSuccess, data: navs } = useNavigationsData();
@@ -30,7 +31,7 @@ function SideBar({ offLayout }) {
 
   const sideNav = [];
 
-  navs?.data?.map((route) => {
+  sideBarItem?.map((route) => {
     if (route.parent_id === 0 && route.is_hidden === 0) {
       sideNav.push(route);
     }
@@ -38,6 +39,8 @@ function SideBar({ offLayout }) {
   });
 
   const sortedSidenav = isSuccess ? _.sortBy(sideNav, 'list_order') : [];
+
+  console.log('l', JSON.stringify( navs?.data))
 
   return (
     <div className="main-container">

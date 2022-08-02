@@ -27,7 +27,7 @@ const contentRoute = [
 
   // ARTICLE
   {
-    name: "Article",
+    name: "News",
     icon: <Newspaper />,
     privilege: [1, 2, 4, 6],
     subscriptions: [1],
@@ -41,6 +41,15 @@ const contentRoute = [
     privilege: [1, 2, 3, 4, 5, 6],
     subscriptions: [1, 2],
     path: "/asset",
+    child: [
+      {
+        name: "Asset",
+        icon: <WebAsset />,
+        privilege: [1, 2, 3, 4, 5, 6],
+        subscriptions: [1, 2],
+        path: "/asset",
+      },
+    ],
   },
 
   // LOCATION
@@ -55,4 +64,5 @@ const contentRoute = [
 ];
 
 export default contentRoute;
+
 

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Collapse } from "@mui/material";
 import { useNavigationsData } from "../../hooks/useNavigationsData";
 import Link from "next/link";
+import sideBarItem from "./sidebarItem";
 
 function SidebarMenu({ route, showAnimation }) {
   // console.log('ini', route)
@@ -48,7 +49,7 @@ function SidebarMenu({ route, showAnimation }) {
           >
             <div key={route.id} className="flex">
               <div className="py-1 pr-1">
-                <FontAwesomeIcon icon={route.icon} />
+                <div>{route.icon}</div>
               </div>
               {sidebar && (
                 <div
@@ -110,7 +111,7 @@ function SidebarMenu({ route, showAnimation }) {
               >
                 <div key={route.id} className="flex">
                   <div className="py-1 pr-1">
-                    <FontAwesomeIcon icon={route.icon} />
+                    <div>{route.icon}</div>
                   </div>
 
                   {sidebar && (
@@ -154,7 +155,7 @@ function SidebarMenu({ route, showAnimation }) {
       <div>
         <Collapse in={isMenuOpen}>
           <div className="menu_container ">
-            {navs?.data.map(
+            {sideBarItem.map(
               (data) =>
                 data.parent_id === route.id && (
                   <Link
@@ -167,7 +168,7 @@ function SidebarMenu({ route, showAnimation }) {
                     <a>
                       <div className={`flex py-1 ${sidebar ? "ml-8" : "ml-1"}`}>
                         <div className="px-2 ">
-                          <FontAwesomeIcon icon={data.icon} />
+                          <div>{data.icon}</div>
                         </div>
                         {sidebar && (
                           <div className="flex gap-x-2">

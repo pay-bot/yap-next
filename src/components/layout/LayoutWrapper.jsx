@@ -10,7 +10,7 @@ function LayoutWrapper({ children }) {
   const sidebar = useSelector((state) => state.sidebar.isOpen);
   return (
     <div className="flex main">
-      <SidebarNew />
+      <SideBar />
       
       <Footer>
         <div className="w-full">

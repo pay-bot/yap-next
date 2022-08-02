@@ -10,14 +10,11 @@ export default function SidebarItemNew({ item }) {
         className={open ? "sidebar-item open" : "sidebar-item"}
       >
         <div className="sidebar-title">
-          <span>
+          <span className="flex space-x-2">
             {item.icon && <div className={item.icon}>{item.icon}</div>}
-            {item.name}
+            <div className="">{item.name}</div>
           </span>
-          <i
-            className="bi-chevron-down toggle-btn"
-            onClick={() => setOpen(!open)}
-          ></i>
+         
         </div>
         <div className="sidebar-content">
           {item.child.map((child, index) => (
@@ -28,10 +25,12 @@ export default function SidebarItemNew({ item }) {
     );
   } else {
     return (
-      <a href={item.path || "#"} className="sidebar-item plain">
-        {item.icon && <div className={item.icon}>{item.icon}</div>}
-        {item.name}
-      </a>
+      <div className="sidebar-title ml-4">
+        <span className="flex space-x-2">
+          {item.icon && <div className={item.icon}>{item.icon}</div>}
+          <div className="">{item.name}</div>
+        </span>
+      </div>
     );
   }
 }
