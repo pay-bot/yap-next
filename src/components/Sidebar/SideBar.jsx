@@ -1,20 +1,42 @@
+import { useSelector } from "react-redux";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { AnimatePresence, motion } from "framer-motion";
+import _ from "lodash";
+import SidebarMenu from "./SidebarMenu";
+import { useNavigationsData } from "../../hooks/useNavigationsData";
+import Link from "next/link";
+import sideBarItem from "./sidebarItem";
+import React, { useState } from "react";
+import SidebarItems from "./SidebarItems";
+import { useRouter } from "next/router";
 
-
-import { useSelector } from 'react-redux';
-import 'react-perfect-scrollbar/dist/css/styles.css';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import { AnimatePresence, motion } from 'framer-motion';
-import _ from 'lodash';
-import SidebarMenu from './SidebarMenu';
-import { useNavigationsData } from '../../hooks/useNavigationsData';
-import Link from 'next/link';
-import sideBarItem from './sidebarItem';
-
-function SideBar({ offLayout }) {
+function SideBar({ offLayout, children }) {
+  const [isOpen, setIsOpen] = useState(true);
+  const toggle = () => setIsOpen(!isOpen);
   const { isSuccess, data: navs } = useNavigationsData();
 
-  console.log('navs', navs?.data);
+  console.log("navs", navs?.data);
   const sidebar = useSelector((state) => state.sidebar.isOpen);
+  const router = useRouter();
+  console.log(">", router);
+
+  const inputAnimation = {
+    hidden: {
+      width: 0,
+      padding: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+    show: {
+      width: "140px",
+      padding: "5px 15px",
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
   const showAnimation = {
     hidden: {
@@ -24,7 +46,7 @@ function SideBar({ offLayout }) {
     },
     show: {
       opacity: 1,
-      width: 'auto',
+      width: "auto",
       transition: { duration: 0.5 },
     },
   };
@@ -38,9 +60,9 @@ function SideBar({ offLayout }) {
     return sideNav;
   });
 
-  const sortedSidenav = isSuccess ? _.sortBy(sideNav, 'list_order') : [];
+  const sortedSidenav = isSuccess ? _.sortBy(sideNav, "list_order") : [];
 
-  console.log('l', JSON.stringify( navs?.data))
+  console.log("l", JSON.stringify(navs?.data));
 
   return (
     <div className="main-container">
@@ -48,49 +70,102 @@ function SideBar({ offLayout }) {
         animate={{
           width: sidebar ? "260px" : "64px",
 
-          // transition: {
-          //   duration: 0.5,
-          //   type: "spring",
-          //   damping: 10,
-          // },
+          transition: {
+            duration: 0.5,
+            type: "spring",
+            damping: 10,
+          },
         }}
-        className="sidebar fixed pb-10"
+        className={`sidebar fixed pb-10 `}
       >
         <PerfectScrollbar>
-          <div className="search mt-6">
-            <div className="search_icon" />
+          <div className="top_section">
             <AnimatePresence>
-              {sidebar && (
-                <Link href="/">
-                  <a>
-                    <div className="">
-                      <img
-                        src="/yaplogofullwhite.svg"
-                        alt=""
-                        className="w-full px-6 py-6 "
-                      />
-                    </div>
-                  </a>
-                </Link>
+              {isOpen && (
+                <motion.h1
+                  variants={showAnimation}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  className="logo"
+                >
+                  DoSomeCoding
+                </motion.h1>
+              )}
+            </AnimatePresence>
+
+            <div className="bars">{/* <FaBars onClick={toggle} /> */}</div>
+          </div>
+          <div className="search">
+            <div className="search_icon">{/* <BiSearch /> */}</div>
+            <AnimatePresence>
+              {isOpen && (
+                <motion.input
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={inputAnimation}
+                  type="text"
+                  placeholder="Search"
+                />
               )}
             </AnimatePresence>
           </div>
           <section className="routes">
-            {sortedSidenav?.map((route) => (
-              <SidebarMenu
-                key={route.name}
-                setIsOpen={sidebar}
-                route={route}
-                // showAnimation={showAnimation}
-                isOpen={sidebar}
-              />
-            ))}
+            {SidebarItems.map((route, index) => {
+              if (route.child.length > 0) {
+                return (
+                  <SidebarMenu
+                    setIsOpen={setIsOpen}
+                    route={route}
+                    showAnimation={showAnimation}
+                    isOpen={isOpen}
+                  />
+                );
+              }
+
+              return (
+                <Link
+                  href={route.url}
+                  key={index}
+                  className=" border-b border-red-600"
+                  activeClassName="active"
+                >
+                  <a>
+                    <div
+                      key={route.id}
+                      className={`menu  ${
+                        router.pathname === route.url ? "bg-[#2D3359]" : ""
+                      }`}
+                    >
+                      <div className={`menu_item w-full px-6 py-1 `}>
+                        <div className="icon">{route.icon}</div>
+                        <AnimatePresence>
+                          {isOpen && sidebar && (
+                            <motion.div
+                              variants={showAnimation}
+                              initial="hidden"
+                              animate="show"
+                              exit="hidden"
+                              className="link_text"
+                            >
+                              {route.name}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </div>
+                  </a>
+                </Link>
+              );
+            })}
           </section>
         </PerfectScrollbar>
       </motion.div>
+
+      <main>{children}</main>
     </div>
   );
 }
 
 export default SideBar;
-

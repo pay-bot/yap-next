@@ -52,15 +52,12 @@ import {
   ViewQuilt,
 } from "@mui/icons-material";
 
-// import settingsRoute from "../../../router/SettingsRoute";
-import contentRoute from "components/router/ContentRoute";
-
-const sideBarItem = [
+const SidebarItems = [
   {
     id: 1,
     name: "Dashboard",
     slug: "/",
-    url: "/admin",
+    url: "/admin/dashboard",
     icon: <Dashboard />,
     child: [],
   },
@@ -114,14 +111,14 @@ const sideBarItem = [
       },
     ],
   },
-  {
-    id: 8,
-    name: "Profile",
-    slug: "profile",
-    url: "/admin/profile",
-    icon: "user",
-    child: [],
-  },
+  // {
+  //   id: 8,
+  //   name: "Profile",
+  //   slug: "profile",
+  //   url: "/admin/profile",
+  //   icon: "user",
+  //   child: [],
+  // },
   {
     id: 9,
     name: "Settings",
@@ -145,14 +142,14 @@ const sideBarItem = [
         icon: <ViewQuilt />,
         child: [],
       },
-      {
-        id: 15,
-        name: "Layouts",
-        slug: "layouts",
-        url: "/admin/settings/layouts",
-        icon: "copy",
-        child: [],
-      },
+      // {
+      //   id: 15,
+      //   name: "Layouts",
+      //   slug: "layouts",
+      //   url: "/admin/settings/layouts",
+      //   icon: "copy",
+      //   child: [],
+      // },
     ],
   },
   {
@@ -336,9 +333,9 @@ const sideBarItem = [
       },
       {
         id: 33,
-        name: "Articles",
-        slug: "articles",
-        url: "/admin/news/articles",
+        name: "Article",
+        slug: "article",
+        url: "/admin/news/article",
         icon: <Article />,
         child: [],
       },
@@ -460,6 +457,4 @@ const sideBarItem = [
   },
 ];
 
-export default sideBarItem;
-
-
+export default SidebarItems;

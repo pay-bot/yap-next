@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
-import { useNavigationsData } from '../hooks/useNavigationsData';
-import { handleSideBar } from '../features/sideBarSlice';
-import _ from 'lodash';
-
+import { useNavigationsData } from "../hooks/useNavigationsData";
+import { handleSideBar } from "../features/sideBarSlice";
+import _ from "lodash";
+import SidebarItems from "./Sidebar/SidebarItems";
 
 export default function Header() {
   const dispatch = useDispatch();
-    const router = useRouter();
+  const router = useRouter();
   const sidebar = useSelector((state) => state.sidebar.isOpen);
   const isLogin = useSelector((state) => state.authReducer);
 
@@ -16,19 +16,26 @@ export default function Header() {
 
   const { data: navs } = useNavigationsData();
 
-
   // let parentId;
   // let parent = {};
 
-  const parentData = navs?.data?.filter((data) =>
+  const parentData = SidebarItems?.filter((data) =>
     router.pathname.includes(data.name.toLowerCase())
   );
 
-  const par = _.uniqBy(parentData, 'name');
+  const par = _.uniqBy(parentData, "name");
 
   return (
-    <div className={`  flex bg-white bg-opacity-90 py-4 shadow gap-x-6 items-center ${sidebar === true ? 'ml-[260px]' : 'ml-16'}`}>
-      <button type="button" onClick={() => dispatch(handleSideBar())} className="ml-6 w-8 bg-white px-2 shadow-lg  flex items-center ">
+    <div
+      className={`  flex bg-white bg-opacity-90 py-4 shadow gap-x-6 items-center ${
+        sidebar === true ? "ml-[260px]" : "ml-16"
+      }`}
+    >
+      <button
+        type="button"
+        onClick={() => dispatch(handleSideBar())}
+        className="ml-6 w-8 bg-white px-2 shadow-lg  flex items-center "
+      >
         <svg
           aria-hidden="true"
           focusable="false"
@@ -49,7 +56,7 @@ export default function Header() {
       <div className="flex gap-x-2 items-center">
         {par?.map((head) => (
           <div key={head.id} className="flex gap-x-1 items-center">
-            <FontAwesomeIcon icon={head.icon ?? 'fa-solid fa-circle-dot'} />
+            <div>{head.icon} </div>
             <div className="">{head.name}</div>
           </div>
         ))}
@@ -72,6 +79,3 @@ export default function Header() {
     </div>
   );
 }
-
-
-

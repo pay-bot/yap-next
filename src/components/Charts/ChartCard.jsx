@@ -1,4 +1,3 @@
-import './index.css';
 
 function ChartCard({ children, title }) {
   return (
