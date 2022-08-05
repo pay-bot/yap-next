@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import swal from "sweetalert";
 import Edit from "../../button/Edit";
 import Delete from "../../button/Delete";
 import { deletePage } from "../../../hooks/usePagesData";
 import Manage from "../../button/Manage";
+import React from "react";
 
 export default function ActionCell({ value, data }) {
   const queryClient = useQueryClient();
@@ -45,7 +45,7 @@ export default function ActionCell({ value, data }) {
               />
               <Edit
                 tooltip={`Edit ${page.name}`}
-                link={`/admin/pages/${value}/edit`}
+                link={`/admin/pages/${value}`}
               />
               <Delete
                 tooltip={`Delete ${page.name}`}

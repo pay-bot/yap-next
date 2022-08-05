@@ -16,7 +16,6 @@ import {
   closeLoading,
   isReactLoading,
 } from "../../../features/reactLoadingSlice";
-import "@nosferatu500/react-sortable-tree/style.css";
 
 function MenuCollection() {
   const dispatch = useDispatch();

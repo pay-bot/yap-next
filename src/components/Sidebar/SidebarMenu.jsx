@@ -125,7 +125,7 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
                         router.pathname === subRoute.url ? "bg-[#2D3359]" : ""
                       }`}
                     >
-                      <div className={`flex py-1 ${sidebar ? "ml-8" : "ml-1"}`}>
+                      <div className={`flex py-1 ${sidebar ? "ml-8" : "ml-3"}`}>
                         <div className="px-2 ">
                           <div className="icon">{subRoute.icon}</div>
                         </div>

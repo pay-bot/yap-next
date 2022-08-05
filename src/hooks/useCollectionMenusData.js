@@ -70,19 +70,19 @@ export const useAddMenuCollectionData = () => {
       onLoad = toast.loading('Loading  ', { position: 'top-right' });
       dispatch(closeModal());
 
-      await queryClient.cancelQueries('menuCollections');
-      const previousMenuData = queryClient.getQueryData('menuCollections');
-      queryClient.setQueryData('menuCollections', (oldQueryData) => ({
+      await queryClient.cancelQueries(['menuCollections']);
+      const previousMenuData = queryClient.getQueryData(['menuCollections']);
+      queryClient.setQueryData(['menuCollections'], (oldQueryData) => ({
         ...oldQueryData,
         data: [...oldQueryData.data, { id: oldQueryData?.data?.length + 1, ...newNav }],
       }));
       return { previousMenuData };
     },
     onError: (_err, _newTodo, context) => {
-      queryClient.setQueryData('menuCollections', context.previousMenuData);
+      queryClient.setQueryData(['menuCollections'], context.previousMenuData);
     },
     onSettled: () => {
-      queryClient.invalidateQueries('menuCollections');
+      queryClient.invalidateQueries(['menuCollections']);
       dispatch(isSubmitOff());
     },
     onSuccess: (data) => {
@@ -164,7 +164,7 @@ const useDeleteCollMenu = () => {
       dispatch(isDeleteOn({ statusCode: _data.status, statusMessage: _data.message }));
 
       /** Query Invalidation Start */
-      queryClient.invalidateQueries('menuCollections');
+      queryClient.invalidateQueries(['menuCollections']);
 
       /** Handling Mutation Response Start */
       // queryClient.setQueryData('super-heroes', oldQueryData => {
@@ -175,7 +175,7 @@ const useDeleteCollMenu = () => {
       // })
     },
     onSettled: () => {
-      queryClient.invalidateQueries('menuCollections');
+      queryClient.invalidateQueries(['menuCollections']);
     },
     onError: (err) => {
       console.log('err', err);

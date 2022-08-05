@@ -10,16 +10,25 @@ import sideBarItem from "./sidebarItem";
 import React, { useState } from "react";
 import SidebarItems from "./SidebarItems";
 import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SideBar({ offLayout, children }) {
+
+  const isLoading = useSelector((state) => state.loading.isReactLoading);
+  const eventMove = useSelector((state) => state.shortable.isMove);
+  const isLogin = useSelector((state) => state.authReducer);
+
+   {
+     isLoading && <ReactLoadings />;
+   }
+   <ToastContainer autoClose={2000} pauseOnHover={false} />;
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
   const { isSuccess, data: navs } = useNavigationsData();
 
-  console.log("navs", navs?.data);
   const sidebar = useSelector((state) => state.sidebar.isOpen);
   const router = useRouter();
-  console.log(">", router);
 
   const inputAnimation = {
     hidden: {
@@ -62,7 +71,6 @@ function SideBar({ offLayout, children }) {
 
   const sortedSidenav = isSuccess ? _.sortBy(sideNav, "list_order") : [];
 
-  console.log("l", JSON.stringify(navs?.data));
 
   return (
     <div className="main-container">

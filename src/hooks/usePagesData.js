@@ -6,7 +6,7 @@ const fetchPages = () =>
   // return axios.get('http://localhost:4000/Pages')
   request({ url: '/pages' });
 export const usePagesData = (onSuccess, onError) =>
-  useQuery('pages', fetchPages, {
+  useQuery(['pages'], fetchPages, {
     onSuccess,
     onError,
     // select: data => {

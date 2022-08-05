@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import InputContainer from '../../input/InputContainer';
@@ -19,10 +19,10 @@ function CollectionForm({ defaultValues, onFormSubmit }) {
   useEffect(() => {
     if (handleSubmitCollection.componentName === 'AddMenuCollection' || handleSubmitCollection.componentName === 'EditCollection') {
       onSubmit();
+      console.log('cate', onFormSubmit);
     }
   }, [handleSubmitCollection]);
 
-  console.log('cate', onFormSubmit);
 
   return (
     <>

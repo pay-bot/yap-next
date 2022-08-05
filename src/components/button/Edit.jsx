@@ -11,7 +11,7 @@ export default function Edit({ onClick, tooltip, link, bgHover, variant }) {
       {link ? (
         <button
           type="button"
-          onClick={() => [navigate(link), dispatch(resetCollection())]}
+          onClick={() => [router.push(link), dispatch(resetCollection())]}
         >
           <div
             // title={tooltip}
