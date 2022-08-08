@@ -19,9 +19,9 @@ function SideBar({ offLayout, children }) {
   const eventMove = useSelector((state) => state.shortable.isMove);
   const isLogin = useSelector((state) => state.authReducer);
 
-   {
-     isLoading && <ReactLoadings />;
-   }
+  //  {
+  //    isLoading && <ReactLoadings />;
+  //  }
    <ToastContainer autoClose={2000} pauseOnHover={false} />;
   const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
@@ -124,6 +124,7 @@ function SideBar({ offLayout, children }) {
               if (route.child.length > 0) {
                 return (
                   <SidebarMenu
+                  key={route.id}
                     setIsOpen={setIsOpen}
                     route={route}
                     showAnimation={showAnimation}

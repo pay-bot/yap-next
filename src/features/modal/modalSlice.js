@@ -15,7 +15,7 @@ const modalSlice = createSlice({
       const currState = state;
       currState.isOpen = true;
       currState.id = action.payload.id;
-      currState.componentName = action.payload.name;
+      currState.componentName = action.payload.componentName;
       currState.modalData = action.payload.modalData;
     },
     closeModal: (state) => {

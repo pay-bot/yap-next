@@ -40,7 +40,7 @@ export default function ModalWrapper({ isOpen, header, children, maxWidth, isHea
   return (
     <Dialog
       scroll="paper"
-      open={(isModal.isOpen && isModal.componentName === componentName, isModal.id === modalId)}
+      open={(isModal.isOpen && isModal.componentName === componentName && isModal.id === modalId)}
       maxWidth={maxWidth}
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
