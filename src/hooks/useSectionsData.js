@@ -3,7 +3,7 @@ import request from '../utils/axios-utils';
 
 export const fetchSections = async ({ queryKey }) => {
   const [_key, { pageId }] = queryKey;
-  return request({ url: `${process.env.REACT_APP_API_URL}/pages/${pageId}/sections` });
+  return request({ url: `/pages/${pageId}/sections` });
 };
 
 export const useSectionsData = (onSuccess, onError) =>

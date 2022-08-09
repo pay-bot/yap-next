@@ -67,3 +67,166 @@ export const usePageDetail = (collectionId) => {
     enabled: isAutoFetching,
   });
 };
+
+const addPage = (data) =>
+  // return axios.post('http://localhost:4000/Navigationes', menu)
+  request({ url: '/pages', method: 'post', data });
+
+export const useAddPageData = () => {
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
+  // const onLoad = toast.loading('Loading  ', { position: 'top-right' });
+
+  let onLoad
+
+
+  return useMutation(addPage, {
+
+    /** Optimistic Update Start */
+    onMutate: async (newNav) => {
+      onLoad = toast.loading('Loading  ', { position: 'top-right' });
+      dispatch(closeModal());
+
+      await queryClient.cancelQueries(['pages']);
+      const previousData = queryClient.getQueryData(['pages']);
+      queryClient.setQueryData(['pages'], (oldQueryData) => ({
+        ...oldQueryData,
+        data: [...oldQueryData.data, { id: oldQueryData?.data?.length + 1, ...newNav }],
+      }));
+      return { previousData };
+    },
+    onError: (_err, _newTodo, context) => {
+      queryClient.setQueryData(['pages'], context.previousData);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['pages']);
+      dispatch(isSubmitOff());
+    },
+    onSuccess: (data) => {
+      if (data.status === 200) {
+
+        toast.update(onLoad, { render: "All is good", type: "success", isLoading: false });
+        // toast.success('Succcess', { position: 'top-right' });
+      } else
+        MySwal.fire({
+          title: 'Error',
+          text: _data.message,
+        });
+      // toast.error('Succcess', { position: 'top-right' });
+
+    },
+    /** Optimistic Update End */
+  })
+};
+
+
+const updatePage = (id, data) => {
+  return request({ url: `/pages/${id}`, method: 'put', data });
+};
+
+export const useUpdatePage = (id) => {
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  let onLoad
+
+  return useMutation((data) => updatePage(id, data), {
+    onMutate: async (newData) => {
+      onLoad = toast.loading('Loading  ', { position: 'top-right' });
+    },
+
+    onError: (err, newData, context) => {
+      queryClient.setQueryData(['pages', context.newData.id], context.previousData);
+    },
+    onSettled: (newData) => {
+      dispatch(isSubmitOff());
+      queryClient.invalidateQueries(['pages', newData.id]);
+      dispatch(closeLoading());
+      dispatch(closeModal());
+
+    },
+    onSuccess: (data) => {
+      if (data.status === 200) {
+
+        toast.update(onLoad, { render: "All is good", type: "success", isLoading: false });
+        // toast.success('Succcess', { position: 'top-right' });
+      } else
+
+        toast.update(onLoad, { render: "Error", type: "error", isLoading: false });
+
+    },
+  });
+};
+
+
+const deletePage = async (id) =>
+  request({
+    url: `/pages/${id}`,
+    method: 'delete',
+    data: { _id: id },
+  });
+
+const useDeletePage = () => {
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  return useMutation(deletePage, {
+    onSuccess: (_data) => {
+      if (_data.status === 200) {
+        MySwal.fire({ title: 'Succcess' });
+      } else
+        MySwal.fire({
+          title: 'Error',
+          text: _data.message,
+        });
+      console.log('data', _data);
+      dispatch(isDeleteOn({ statusCode: _data.status, statusMessage: _data.message }));
+
+      /** Query Invalidation Start */
+      queryClient.invalidateQueries(['pages']);
+
+      /** Handling Mutation Response Start */
+      // queryClient.setQueryData('super-heroes', oldQueryData => {
+      //   return {
+      //     ...oldQueryData,
+      //     data: [...oldQueryData.data, data.data]
+      //   }
+      // })
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['pages']);
+    },
+    onError: (err) => {
+      console.log('err', err);
+    },
+  });
+};
+
+export const useDestroyPage = (id) => {
+  const { mutate: deleteCont } = useDeletePage(id);
+  const deleteRes = useSelector((state) => state.crud.deleteReq);
+  const dispatch = useDispatch();
+
+  console.log('red', deleteRes);
+
+  return async (idColl) => {
+    await MySwal.fire({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this imaginary file!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true,
+    }).then((willDelete) => {
+      console.log(willDelete);
+      if (willDelete.isConfirmed) {
+        deleteCont(idColl);
+      } else {
+        MySwal.fire({ title: 'Your imaginary file is safe!' });
+      }
+    });
+    dispatch(isDeleteOn({ statusCode: '', statusMessage: '' }));
+  };
+};
+
+

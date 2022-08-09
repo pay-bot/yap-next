@@ -15,7 +15,7 @@ import SortableTree, {
 } from "@nosferatu500/react-sortable-tree";
 import "@nosferatu500/react-sortable-tree/style.css";
 
-import { usePageDetail, useSiteStructureData } from "hooks/useStructuresData";
+import { useAddPageData, useDestroyPage, usePageDetail, useSiteStructureData, useUpdatePage } from "hooks/useStructuresData";
 import { openModal } from "features/modal/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ModalWrapper from "components/modal/ModalWrapper";
@@ -62,61 +62,7 @@ export default function Structure() {
     }));
   }
 
-  function generateNprops(node) {
-    const html = (
-      <div key={node.title} title={node.title} className="">
-        <span className="float-left">{`${node.title} `}</span>
-        <div className="flex  right-3 gap-x-1 absolute">
-          <button
-            type="button"
-            title="Add child"
-            className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
-            onClick={() =>
-              dispatch(openModal({ id: node.id, componentName: "addPage" }))
-            }
-          >
-            <Add fontSize="small" />
-          </button>
-          <button
-            type="button"
-            title="Add child"
-            className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
-            onClick={() =>
-              dispatch(openModal({ componentName: "editPage", id: node.id }))
-            }
-            // onClick={() =>
-            //   dispatch(
-            //     openModal({ id: node.id, componentName: "editPage" })
-            //   )
-            // }
-          >
-            <Edit fontSize="small" />
-          </button>
-
-          <button
-            type="button"
-            title="Add child"
-            className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
-            //  onClick={() => onDestroyPage(node.id)}
-          >
-            <Delete fontSize="small" />
-          </button>
-          <button
-            type="button"
-            title="Add child"
-            className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
-          >
-            <Link href={`/page/detail/${node.id}`}>
-              <a href="" className="">
-                <ArrowForward fontSize="small" />
-              </a>
-            </Link>
-          </button>
-        </div>
-      </div>
-    );
-    return html;
-  }
+  
 
   const [treeData, setTreeData] = useState([]);
   useEffect(() => {
@@ -134,26 +80,79 @@ export default function Structure() {
     });
   };
 
-  const { mutateAsync } = useMutation(createPage, {
-    onSuccess: (e) => {
-      console.log("d", e);
-      if (e.request.status === 200) {
-        toast.success("Page has been created", { position: "top-right" });
-        navigate("/admin/pages");
-        dispatch(closeLoading());
-      } else {
-        toast.error("Page failed to create  ", { position: "top-right" });
-        dispatch(closeLoading());
-      }
-    },
-  });
+  const { mutate: addPage } = useAddPageData();
 
   const onSubmitPage = async (data) => {
-    dispatch(isReactLoading());
-    await mutateAsync(data);
-    // dispatch(closeLoading());
-    // navigate(-1);
+    await addPage(data);
   };
+
+  
+  const { mutate: updatePage } = useUpdatePage(pageId, pageDetail?.data);
+
+  const onUpdatePage = async (dataMenu) => {
+    await updatePage(dataMenu);
+  };
+
+
+    const removePage = useDestroyPage();
+
+
+    function generateNprops(node) {
+      const pagesId = node.id
+      const html = (
+        <div key={node.title} title={node.title} className="">
+          <span className="float-left">{`${node.title} `}</span>
+          <div className="flex  right-3 gap-x-1 absolute">
+            <button
+              type="button"
+              title="Add child"
+              className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
+              onClick={() =>
+                dispatch(openModal({ id: node.id, componentName: "addPage" }))
+              }
+            >
+              <Add fontSize="small" />
+            </button>
+            <button
+              type="button"
+              title="Add child"
+              className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
+              onClick={() =>
+                dispatch(openModal({ componentName: "editPage", id: node.id }))
+              }
+              // onClick={() =>
+              //   dispatch(
+              //     openModal({ id: node.id, componentName: "editPage" })
+              //   )
+              // }
+            >
+              <Edit fontSize="small" />
+            </button>
+
+            <button
+              type="button"
+              title="Add child"
+              className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
+              onClick={() => removePage(node.id)}
+            >
+              <Delete fontSize="small" />
+            </button>
+            <button
+              type="button"
+              title="Add child"
+              className="  w-6 h-6 p-0 bg-green-300 flex items-center justify-center rounded"
+            >
+              <Link href={`/admin/pages/detail/${pagesId}`}>
+                <a href="" className="">
+                  <ArrowForward fontSize="small" />
+                </a>
+              </Link>
+            </button>
+          </div>
+        </div>
+      );
+      return html;
+    }
 
   return (
     <SectionWrapper>
@@ -208,7 +207,7 @@ export default function Structure() {
         onClick={() => dispatch(isSubmitOn({ componentName: "editPage" }))}
       >
         <PageForm
-          onFormSubmit={onSubmitPage}
+          onFormSubmit={onUpdatePage}
           defaultValues={pageDetail?.data}
           key={pageDetail?.data?.id}
         />

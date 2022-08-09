@@ -12,6 +12,7 @@ import FormWrapper from "../../layout/FormWrapper";
 import Submit from "../../button/Submit";
 import schema from "./validation";
 import CheckBoxContainer from "../../input/CheckBoxContainer";
+import { useSelector } from "react-redux";
 
 function PageForm({ defaultValues, onFormSubmit }) {
   const {
@@ -20,6 +21,10 @@ function PageForm({ defaultValues, onFormSubmit }) {
   } = useForm({
     defaultValues,
   });
+
+
+  const dataModal = useSelector((state) => state.modal);
+
 
   console.log("def", defaultValues);
   const onSubmit = handleSubmit((data) => {
@@ -54,12 +59,12 @@ function PageForm({ defaultValues, onFormSubmit }) {
       title: data.title,
       description: data.description,
       slug: data.slug,
-      parent_id: "0",
-      url_parent_id: "0",
+      parent_id: defaultValues ? data.parent_id : dataModal.id,
+      url_parent_id: defaultValues ? data.parent_id : dataModal.id,
       url: "",
       is_header: "",
       is_footer: "",
-      allow_comments: ""
+      allow_comments: "",
     });
   });
 
@@ -230,5 +235,7 @@ function PageForm({ defaultValues, onFormSubmit }) {
 }
 
 export default PageForm;
+
+
 
 
