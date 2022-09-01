@@ -2,9 +2,15 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import request from '../utils/axios-utils';
 
 export const fetchSections = async ({ queryKey }) => {
+  const [_key, { pageId, sectionId }] = queryKey;
+  return request({ url: `/pages/${pageId}/sections/${sectionId}/content` });
+};
+
+export const fetchPages = async ({ queryKey }) => {
   const [_key, { pageId }] = queryKey;
   return request({ url: `/pages/${pageId}/sections` });
 };
+
 
 export const useSectionsData = (onSuccess, onError) =>
   useQuery('sections', fetchSections, {

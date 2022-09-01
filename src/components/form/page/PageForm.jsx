@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import "react-quill/dist/quill.snow.css";
@@ -13,18 +13,14 @@ import Submit from "../../button/Submit";
 import schema from "./validation";
 import CheckBoxContainer from "../../input/CheckBoxContainer";
 import { useSelector } from "react-redux";
+import { isSubmitOn } from "features/crudSlice";
 
 function PageForm({ defaultValues, onFormSubmit }) {
-  const {
-    handleSubmit,
-    control,
-  } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues,
   });
 
-
   const dataModal = useSelector((state) => state.modal);
-
 
   console.log("def", defaultValues);
   const onSubmit = handleSubmit((data) => {
@@ -53,14 +49,26 @@ function PageForm({ defaultValues, onFormSubmit }) {
 
     // onFormSubmit(formData);
 
+    let parent;
+    if (dataModal.componentName === "addChild") {
+      parent = dataModal.id;
+    }
+    if (dataModal.componentName === "addPage") {
+      parent = 0;
+    }
+
+    if (dataModal.componentName === "editPage") {
+      parent = data.parent_id;
+    }
+
     onFormSubmit({
       name: data.name,
       icon: data.icon,
       title: data.title,
       description: data.description,
       slug: data.slug,
-      parent_id: defaultValues ? data.parent_id : dataModal.id,
-      url_parent_id: defaultValues ? data.parent_id : dataModal.id,
+      parent_id: parent,
+      url_parent_id: parent,
       url: "",
       is_header: "",
       is_footer: "",
@@ -73,57 +81,69 @@ function PageForm({ defaultValues, onFormSubmit }) {
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
   };
+
+  const handleSubmitCollection = useSelector((state) => state.crud.submitReq);
+  useEffect(() => {
+    if (
+      handleSubmitCollection.componentName === "addChild" ||
+      handleSubmitCollection.componentName === "addPage" ||
+      handleSubmitCollection.componentName === "editPage"
+    ) {
+      onSubmit();
+      console.log("cate", onFormSubmit);
+    }
+  }, [handleSubmitCollection]);
+
   return (
     <FormWrapper>
       <div>
-        <form onSubmit={onSubmit}>
-          <Box
-            sx={{
-              border: 1,
-              borderColor: "divider",
-              padding: 2,
-              margin: 2,
-              borderRadius: 1,
-            }}
-          >
-            <div className="flex w-full ">
-              <div className="w-4/12">Page Detail</div>
-              <div className="w-8/12 space-y-5">
-                <InputContainer
-                  name="icon"
-                  control={control}
-                  // defaultValue={defau}
-                  label="Icon"
-                  // errors={errors.name}
-                />
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            padding: 2,
+            margin: 2,
+            borderRadius: 1,
+          }}
+        >
+          <div className="flex w-full ">
+            <div className="w-4/12">Page Detail</div>
+            <div className="w-8/12 space-y-5">
+              <InputContainer
+                name="icon"
+                control={control}
+                // defaultValue={defau}
+                label="Icon"
+                // errors={errors.name}
+              />
 
-                <InputContainer
-                  name="name"
-                  control={control}
-                  // defaultValue={defau}
-                  label="Name"
-                />
+              <InputContainer
+                name="name"
+                control={control}
+                // defaultValue={defau}
+                label="Name"
+              />
 
-                {/* <InputContainer
+              {/* <InputContainer
                           name="slug"
                           control={control}
                           // defaultValue={defau}
                           label="Slug"
                         // errors={errors.name}
                         /> */}
-                <div className="flex">
-                  <div className="">
-                    <CheckBoxContainer
-                      name="is_header"
-                      control={control}
-                      defaultValue={
-                        defaultValues?.allow_comment === 1 ? "on" : ""
-                      }
-                      label="Is Header?"
-                    />
-                  </div>
+              <div className="flex">
+                <div className="">
+                  <CheckBoxContainer
+                    name="is_header"
+                    control={control}
+                    defaultValue={
+                      defaultValues?.allow_comment === 1 ? "on" : ""
+                    }
+                    label="Is Header?"
+                  />
+                </div>
 
-                  {/* <div className="">
+                {/* <div className="">
                       <input
                         type="checkbox"
                         id="is_header"
@@ -138,7 +158,7 @@ function PageForm({ defaultValues, onFormSubmit }) {
                         Is Header
                       </label>
                     </div> */}
-                  {/* <div className="">
+                {/* <div className="">
                 <input
                   type="checkbox"
                   id="allow_comments"
@@ -184,58 +204,52 @@ function PageForm({ defaultValues, onFormSubmit }) {
                 </label>
               </div> */}
 
-                  <div className="">
-                    <CheckBoxContainer
-                      name="allow_comments"
-                      control={control}
-                      defaultValue={
-                        defaultValues?.allow_comment === 1 ? "on" : ""
-                      }
-                      label="Allow Comments?"
-                    />
-                  </div>
+                <div className="">
+                  <CheckBoxContainer
+                    name="allow_comments"
+                    control={control}
+                    defaultValue={
+                      defaultValues?.allow_comment === 1 ? "on" : ""
+                    }
+                    label="Allow Comments?"
+                  />
                 </div>
               </div>
             </div>
-          </Box>
-          <Box
-            sx={{
-              border: 1,
-              borderColor: "divider",
-              padding: 2,
-              margin: 2,
-              borderRadius: 1,
-            }}
-          >
-            <div className="flex w-full ">
-              <div className="w-4/12">Meta Detail</div>
-              <div className="w-8/12 space-y-5">
-                <InputContainer
-                  name="title"
-                  control={control}
-                  // defaultValue={defau}
-                  label="Meta title"
-                />
+          </div>
+        </Box>
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            padding: 2,
+            margin: 2,
+            borderRadius: 1,
+          }}
+        >
+          <div className="flex w-full ">
+            <div className="w-4/12">Meta Detail</div>
+            <div className="w-8/12 space-y-5">
+              <InputContainer
+                name="title"
+                control={control}
+                // defaultValue={defau}
+                label="Meta title"
+              />
 
-                <InputContainer
-                  name="description"
-                  control={control}
-                  // defaultValue={defau}
-                  label="Meta description"
-                />
-              </div>
+              <InputContainer
+                name="description"
+                control={control}
+                // defaultValue={defau}
+                label="Meta description"
+              />
             </div>
-          </Box>
-
-          <Submit />
-        </form>
+          </div>
+        </Box>
       </div>
     </FormWrapper>
   );
 }
 
 export default PageForm;
-
-
-
 

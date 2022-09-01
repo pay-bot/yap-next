@@ -11,6 +11,8 @@ import LayoutWrapper from 'components/layout/LayoutWrapper';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
+import GlobalStyles from '@mui/material/GlobalStyles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 
 function MyApp({ Component, pageProps }) {
@@ -36,6 +38,20 @@ function MyApp({ Component, pageProps }) {
   // const eventMove = useSelector((state) => state.shortable.isMove);
   // const isLogin = useSelector((state) => state.authReducer);
 
+  
+
+  const theme = createTheme({
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            minWidth: 0
+          },
+        },
+      },
+    },
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
       <ToastContainer closeOnClick autoClose="2000" pauseOnHover={false} />
@@ -44,11 +60,14 @@ function MyApp({ Component, pageProps }) {
         <Hydrate state={pageProps.dehydratedState}>
 
           <Provider store={store}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
             <LayoutWrapper>
               {/* <Layout> */}
               <Component {...pageProps} />
               {/* </Layout> */}
             </LayoutWrapper>
+            </ThemeProvider>
           </Provider>
         </Hydrate>
       </SafeHydrate>

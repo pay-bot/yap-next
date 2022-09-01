@@ -1,45 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import Link from "next/link";
-import { fetchPages, fetchSections } from "hooks/useSectionsData";
+// import TitlePage from "../../../../../components/TitlePage";
+import { useRouter } from "next/router";
+
 import SectionWrapper from "components/layout/SectionWrapper";
 import ContentHeading from "components/layout/ContentHeading";
-import {
-  CardActionArea,
-  CardActions,
-  CardContent,
-  Card,
-  Pagination,
-  Button,
-  styled,
-  Tabs,
-  Tab,
-  Box,
-  FormControlLabel,
-  FormLabel,
-  FormControl,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import {
-  ArrowForward,
-  Edit,
-  Sync,
-  Code,
-  LogoDev,
-  Menu,
-} from "@mui/icons-material";
+import Link from "next/link";
+import { fetchSections } from "hooks/useSectionsData";
 
-function PageDetail() {
+export default function Sections() {
   const router = useRouter();
   const pageId = router.query.pagesId;
 
   const { data: section, isSuccess } = useQuery(
     ["sections", { pageId }],
-    fetchPages
+    fetchSections
   );
 
   const sectionIdSort = [];
@@ -53,102 +30,9 @@ function PageDetail() {
   const [sor, setSor] = useState(sortedCols);
   useEffect(() => {
     setSor(sortedCols);
-  }, [section]);
+  }, [sortedCols]);
 
-  console.log("sssor", sectionIdSort);
-
-  function generateNprops(node) {
-    const html = (
-      <div title={node.name} className="">
-        {/* <span className="float-left">{`${shortSentence(node.name, 9)} ... `}</span> */}
-        <div className="flex gap-x-2  right-0 absolute">
-          <Button
-            title="Generate Metadata"
-            className="min-w-0 mx-1 w-6 h-6 p-0"
-            size="small"
-            variant="contained"
-            color="success"
-            sx={{ minWidth: 0 }}
-            // onClick={() => onGenerateMeta(node.id)}
-          >
-            <Sync fontSize="small" />
-          </Button>
-          <Button
-            title="View Metadata"
-            className="min-w-0 mx-1 w-6 h-6 p-0"
-            size="small"
-            variant="contained"
-            color="success"
-            sx={{ minWidth: 0 }}
-            // onClick={() =>
-            //   dispatch(
-            //     handleModal({ modalId: node.id, componentName: "generateMeta" })
-            //   )
-            // }
-          >
-            <Code fontSize="small" />
-          </Button>
-          <Button
-            // disabled={node.parent === undefined}
-            title="To Developer Mode"
-            className="min-w-0 mx-1 w-6 h-6 p-0"
-            size="small"
-            variant="contained"
-            color="error"
-          >
-            <Link href={`/admin/pages/${pageId}/section/developer/${node.id}`}>
-              <a>
-                <LogoDev fontSize="small" />
-              </a>
-            </Link>
-          </Button>
-          <Button
-            title="Edit Section"
-            className="min-w-0 mx-1 w-6 h-6 p-0"
-            size="small"
-            variant="contained"
-            // onClick={() =>
-            //   dispatch(
-            //     handleModal({ modalId: node.id, componentName: "editSection" })
-            //   )
-            // }
-          >
-            <Edit fontSize="small" />
-          </Button>
-          {node.menu && (
-            <Button
-              title="Section Menu"
-              className="min-w-0 mx-1 w-6 h-6 p-0"
-              size="small"
-              variant="contained"
-            >
-              <Link href={`/menu-list/${node.menu}`}>
-                <a>
-                  <Menu fontSize="small" />
-                </a>
-              </Link>
-            </Button>
-          )}
-
-          <Button
-            title={`To Page ${node.name}`}
-            size="small"
-            variant="contained"
-            className="min-w-0 mx-1 w-6 h-6 p-0"
-          >
-            <Link href={`/admin/pages/${pageId}/section/detail/${node.id}`}>
-              <a>
-                <ArrowForward fontSize="small" />
-              </a>
-            </Link>
-          </Button>
-        </div>
-      </div>
-    );
-    return html;
-  }
-
-
+  console.log("sssor", section);
 
   return (
     <SectionWrapper>
@@ -192,7 +76,7 @@ function PageDetail() {
                           <div className="bg-blue-600 w-full text-white p-2 rounded-t relative flex">
                             {/* <input type="checkbox" name="lang" value={page.id} className="" onChange={handleDeleteSection} /> */}
                             <p className="ml-8">{page?.name}</p>
-                            <div className="">{generateNprops(page)}</div>
+                            {/* <div className="">{generateNprops(page)}</div> */}
                           </div>
                           <div className="w-full p-3">
                             <img
@@ -223,5 +107,3 @@ function PageDetail() {
     </SectionWrapper>
   );
 }
-
-export default PageDetail;

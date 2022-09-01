@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Link from "next/link";
-import { fetchPages, fetchSections } from "hooks/useSectionsData";
+import { fetchSections } from "hooks/useSectionsData";
 import SectionWrapper from "components/layout/SectionWrapper";
 import ContentHeading from "components/layout/ContentHeading";
 import {
@@ -39,7 +39,7 @@ function PageDetail() {
 
   const { data: section, isSuccess } = useQuery(
     ["sections", { pageId }],
-    fetchPages
+    fetchSections
   );
 
   const sectionIdSort = [];
@@ -96,7 +96,7 @@ function PageDetail() {
             variant="contained"
             color="error"
           >
-            <Link href={`/admin/pages/${pageId}/section/developer/${node.id}`}>
+            <Link href={`/section/developer/${node.id}`}>
               <a>
                 <LogoDev fontSize="small" />
               </a>
@@ -136,7 +136,7 @@ function PageDetail() {
             variant="contained"
             className="min-w-0 mx-1 w-6 h-6 p-0"
           >
-            <Link href={`/admin/pages/${pageId}/section/detail/${node.id}`}>
+            <Link href={`/admin/section/detail/${node.id}`}>
               <a>
                 <ArrowForward fontSize="small" />
               </a>
